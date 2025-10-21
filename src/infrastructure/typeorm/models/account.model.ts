@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserModel } from './user.model';
-import { AccountType } from 'src/modules/account/application/enum/account.enum';
+import { AccountType } from 'src/modules/user/domain/enum/account.enum';
 import { registerEnumType } from '@nestjs/graphql';
 import { ExpenseModel } from './expense.model';
 
