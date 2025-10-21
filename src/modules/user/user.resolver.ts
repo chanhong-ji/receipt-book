@@ -1,7 +1,7 @@
 import { Query, Resolver } from '@nestjs/graphql';
 
 @Resolver()
-export class UsersResolver {
+export class UserResolver {
   constructor() {}
 
   @Query(() => String)
