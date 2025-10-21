@@ -1,12 +1,6 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { AccountModel } from './account.model';
+import { CategoryModel } from './category.model';
 
 @Entity({ name: 'user' })
 export class UserModel {
@@ -30,4 +24,7 @@ export class UserModel {
 
   @OneToMany(() => AccountModel, (account) => account.user, { cascade: true })
   accounts: AccountModel[];
+
+  @OneToMany(() => CategoryModel, (category) => category.user, { cascade: true })
+  categories: CategoryModel[];
 }
