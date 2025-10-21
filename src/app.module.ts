@@ -7,6 +7,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
 import { AppController } from './app.controller';
 import configuration from './config/configuration';
+import { CategoryModule } from './modules/category/category.module';
+import { ExpenseModule } from './modules/expense/expense.module';
+import { MerchantModule } from './modules/merchant/merchant.module';
 
 @Module({
   imports: [
@@ -37,6 +40,9 @@ import configuration from './config/configuration';
     }),
 
     UserModule,
+    CategoryModule,
+    ExpenseModule,
+    MerchantModule,
   ],
   controllers: [AppController],
 })
