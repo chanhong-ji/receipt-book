@@ -3,12 +3,14 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserModel } from './user.model';
 import { AccountType } from 'src/modules/account/application/enum/account.enum';
 import { registerEnumType } from '@nestjs/graphql';
+import { ExpenseModel } from './expense.model';
 
 registerEnumType(AccountType, {
   name: 'AccountType',
@@ -30,6 +32,9 @@ export class AccountModel {
 
   @Column({ type: 'enum', enum: AccountType, nullable: false })
   type: AccountType;
+
+  @OneToMany(() => ExpenseModel, (expense) => expense.account, { cascade: true })
+  expenses: ExpenseModel[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;

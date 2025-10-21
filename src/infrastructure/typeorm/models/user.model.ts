@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { AccountModel } from './account.model';
 import { CategoryModel } from './category.model';
+import { ExpenseModel } from './expense.model';
 
 @Entity({ name: 'user' })
 export class UserModel {
@@ -27,4 +28,7 @@ export class UserModel {
 
   @OneToMany(() => CategoryModel, (category) => category.user, { cascade: true })
   categories: CategoryModel[];
+
+  @OneToMany(() => ExpenseModel, (expense) => expense.user, { cascade: true })
+  expenses: ExpenseModel[];
 }
