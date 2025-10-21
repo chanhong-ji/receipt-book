@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Up
 import { AccountModel } from './account.model';
 import { CategoryModel } from './category.model';
 import { ExpenseModel } from './expense.model';
+import { BudgetModel } from './budget.model';
 
 @Entity({ name: 'user' })
 export class UserModel {
@@ -31,4 +32,7 @@ export class UserModel {
 
   @OneToMany(() => ExpenseModel, (expense) => expense.user, { cascade: true })
   expenses: ExpenseModel[];
+
+  @OneToMany(() => BudgetModel, (budget) => budget.user, { cascade: true })
+  budgets: BudgetModel[];
 }
