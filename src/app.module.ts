@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 import { UserModule } from './modules/user/user.module';
 import { AppController } from './app.controller';
@@ -16,8 +17,8 @@ import { MerchantModule } from './modules/merchant/merchant.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       playground: false,
-      graphiql: true,
       autoSchemaFile: true,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
 
     ConfigModule.forRoot({

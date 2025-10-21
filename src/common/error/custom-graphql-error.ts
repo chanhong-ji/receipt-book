@@ -1,11 +1,15 @@
-import { GraphQLError, GraphQLErrorExtensions } from 'graphql';
-
-interface CustomErrorExtensions extends GraphQLErrorExtensions {
-  level: 'log' | 'warn' | 'error';
-}
+import { GraphQLError } from 'graphql';
+import { ErrorDetail } from './error.service';
 
 export class CustomGraphQLError extends GraphQLError {
-  constructor(message: string, extensions: CustomErrorExtensions) {
-    super(message, { extensions });
+  constructor(errorDetail: ErrorDetail) {
+    super(errorDetail.description, {
+      extensions: {
+        level: errorDetail.logLevel,
+        statusCode: errorDetail.statusCode,
+        description: errorDetail.description,
+        code: errorDetail.code,
+      },
+    });
   }
 }

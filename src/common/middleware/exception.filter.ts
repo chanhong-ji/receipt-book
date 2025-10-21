@@ -12,6 +12,7 @@ export class ExceptionFilter implements GqlExceptionFilter {
 
     const logData = {
       fieldName,
+      code: exception?.extensions?.code || 'UNKNOWN',
       level: exception?.extensions?.level || 'error',
       message: exception.message,
       stack: exception.stack,
@@ -31,7 +32,7 @@ export class ExceptionFilter implements GqlExceptionFilter {
           console.error(logData);
           break;
       }
-      return { ok: false, error: logData.message };
+      return { ok: false, error: logData.message, code: logData.code };
     }
 
     if (exception instanceof QueryFailedError) {
