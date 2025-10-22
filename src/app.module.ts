@@ -3,14 +3,15 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_GUARD } from '@nestjs/core';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-
-import { UserModule } from './modules/user/user.module';
-import { AppController } from './app.controller';
 import configuration from './config/configuration';
+import { AuthenticationGuard } from './common/auth/guard/authentication.guard';
+import { UserModule } from './modules/user/user.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ExpenseModule } from './modules/expense/expense.module';
 import { MerchantModule } from './modules/merchant/merchant.module';
+import { AuthModule } from './common/auth/auth.module';
 
 @Module({
   imports: [
@@ -40,11 +41,17 @@ import { MerchantModule } from './modules/merchant/merchant.module';
       inject: [ConfigService],
     }),
 
+    AuthModule,
     UserModule,
     CategoryModule,
     ExpenseModule,
     MerchantModule,
   ],
-  controllers: [AppController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthenticationGuard,
+    },
+  ],
 })
 export class AppModule {}
