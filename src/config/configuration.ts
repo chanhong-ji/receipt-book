@@ -11,5 +11,9 @@ export default () => ({
     bcrypt: {
       salt: Number(process.env.BCRYPT_SALT ?? 10),
     },
+    jwt: {
+      secret: process.env.JWT_SECRET,
+      expiresIn: process.env.JWT_EXPIRES_IN ?? '1D',
+    },
   },
 });
