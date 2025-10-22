@@ -15,6 +15,12 @@ export class LoginInput implements ILoginInput {
 
 @ObjectType()
 export class LoginOutput implements ILoginOutput {
+  @Field(() => Boolean)
+  ok: boolean;
+
+  @Field(() => String, { nullable: true })
+  error?: string;
+
   @Field(() => Int, { description: '사용자 ID', nullable: true })
   userId: number;
 

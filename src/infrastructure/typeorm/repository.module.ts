@@ -10,6 +10,7 @@ import { MerchantModel } from './models/merchant.model';
 import { TypeormCategoryRepository } from './repository/typeorm-category.repository';
 import { TypeormExpenseRepository } from './repository/typeorm-expense.repository';
 import { TypeormMerchantRepository } from './repository/typeorm-merchant.repository';
+import { TypeormAccountRepository } from './repository/typeorm-account.repository';
 
 @Global()
 @Module({
@@ -20,6 +21,10 @@ import { TypeormMerchantRepository } from './repository/typeorm-merchant.reposit
     {
       provide: 'UserRepository',
       useClass: TypeormUserRepository,
+    },
+    {
+      provide: 'AccountRepository',
+      useClass: TypeormAccountRepository,
     },
     {
       provide: 'CategoryRepository',
@@ -34,6 +39,12 @@ import { TypeormMerchantRepository } from './repository/typeorm-merchant.reposit
       useClass: TypeormMerchantRepository,
     },
   ],
-  exports: ['UserRepository', 'CategoryRepository', 'ExpenseRepository', 'MerchantRepository'],
+  exports: [
+    'UserRepository', //
+    'AccountRepository',
+    'CategoryRepository',
+    'ExpenseRepository',
+    'MerchantRepository',
+  ],
 })
 export class RepositoryModule {}

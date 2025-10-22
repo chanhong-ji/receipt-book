@@ -28,6 +28,7 @@ export class UserResolver {
   async login(@Args('LoginInput') input: LoginInput): Promise<LoginOutput> {
     const { userId, token } = await this.factory.login(input);
     return {
+      ok: true,
       userId,
       token,
     };
