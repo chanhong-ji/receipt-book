@@ -1,12 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { Account } from './entity/account.entity';
+import { ICreateAccountInput } from '../application/dtos/create-account.dto';
+import { User } from 'src/modules/user/domain/entity/user.entity';
 import { FindAccountsUsecase } from './usecases/find-accounts.usecase';
+import { CreateAccountUsecase } from './usecases/create-accounts.usecase';
 
 @Injectable()
 export class AccountFactory {
-  constructor(private readonly findAccountsUsecase: FindAccountsUsecase) {}
+  constructor(
+    private readonly findAccountsUsecase: FindAccountsUsecase,
+    private readonly createAccountUsecase: CreateAccountUsecase,
+  ) {}
 
   findAccounts(userId: number): Promise<Account[]> {
     return this.findAccountsUsecase.execute(userId);
+  }
+
+  createAccount(input: ICreateAccountInput, user: User): Promise<Account> {
+    return this.createAccountUsecase.execute(input, user);
   }
 }

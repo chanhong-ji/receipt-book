@@ -9,6 +9,7 @@ export enum ErrorCode {
   USER_NOT_FOUND = 'USER_NOT_FOUND',
   PERMISSION_DENIED = 'PERMISSION_DENIED',
   PASSWORD_WRONG = 'PASSWORD_WRONG',
+  ACCOUNT_ALREADY_EXISTS = 'ACCOUNT_ALREADY_EXISTS',
 }
 
 export interface ErrorDetail {
@@ -67,6 +68,12 @@ export class ErrorService {
       code: ErrorCode.PASSWORD_WRONG,
       description: '비밀번호가 일치하지 않습니다',
       statusCode: 401,
+      logLevel: 'log',
+    },
+    [ErrorCode.ACCOUNT_ALREADY_EXISTS]: {
+      code: ErrorCode.ACCOUNT_ALREADY_EXISTS,
+      description: '동일한 이름의 결제 수단이 이미 존재합니다',
+      statusCode: 400,
       logLevel: 'log',
     },
   };

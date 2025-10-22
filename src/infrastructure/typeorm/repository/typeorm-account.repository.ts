@@ -17,6 +17,18 @@ export class TypeormAccountRepository implements AccountRepository {
     return models.map(this.toEntity);
   }
 
+  async save(account: Account, userId: number): Promise<Account> {
+    const model = await this.repository.save(
+      this.repository.create({
+        name: account.name,
+        type: account.type,
+        isActive: account.isActive,
+        user: { id: userId },
+      }),
+    );
+    return this.toEntity(model);
+  }
+
   toEntity(model: AccountModel): Account {
     const account = new Account();
     account.id = model.id;

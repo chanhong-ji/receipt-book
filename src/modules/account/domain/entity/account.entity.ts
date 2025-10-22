@@ -9,4 +9,13 @@ export class Account {
   type: AccountType;
   createdAt: Date;
   updatedAt: Date;
+
+  static create(name: string, type: AccountType, user: User): Account {
+    const account = new Account();
+    account.name = name;
+    account.type = type;
+    account.user = user;
+    account.isActive = true;
+    return account;
+  }
 }

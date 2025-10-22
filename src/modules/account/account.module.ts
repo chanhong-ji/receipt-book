@@ -3,6 +3,7 @@ import { AccountResolver } from './presentation/account.resolver';
 import { Module } from '@nestjs/common';
 import { AccountFactory } from './domain/account.factory';
 import { FindAccountsUsecase } from './domain/usecases/find-accounts.usecase';
+import { CreateAccountUsecase } from './domain/usecases/create-accounts.usecase';
 
 @Module({
   imports: [RepositoryModule],
@@ -11,6 +12,7 @@ import { FindAccountsUsecase } from './domain/usecases/find-accounts.usecase';
     AccountFactory,
     // Usecases
     FindAccountsUsecase,
+    CreateAccountUsecase,
   ],
 })
 export class AccountModule {}
