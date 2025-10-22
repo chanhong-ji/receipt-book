@@ -14,4 +14,12 @@ export class User {
   categories?: Category[];
   expenses?: Expense[];
   budgets?: Budget[];
+
+  static create(email: string, name: string, password: string): User {
+    const user = new User();
+    user.email = email;
+    user.name = name;
+    user.password = password;
+    return user;
+  }
 }

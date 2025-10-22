@@ -3,7 +3,7 @@ import { ErrorDetail } from './error.service';
 
 export class CustomGraphQLError extends GraphQLError {
   constructor(errorDetail: ErrorDetail) {
-    super(errorDetail.description, {
+    super(errorDetail.code, {
       extensions: {
         level: errorDetail.logLevel,
         statusCode: errorDetail.statusCode,

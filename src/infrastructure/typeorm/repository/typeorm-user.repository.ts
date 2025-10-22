@@ -17,6 +17,21 @@ export class TypeormUserRepository implements UserRepository {
     return models.map(this.toEntity);
   }
 
+  async findByEmail(email: string): Promise<User | null> {
+    const model = await this.repository.findOne({ where: { email } });
+    if (!model) return null;
+    return this.toEntity(model);
+  }
+
+  async save(user: User): Promise<User> {
+    const savedModel = await this.repository.save({
+      email: user.email,
+      name: user.name,
+      password: user.password,
+    });
+    return this.toEntity(savedModel);
+  }
+
   toEntity(model: UserModel): User {
     const user = new User();
     user.id = model.id;
