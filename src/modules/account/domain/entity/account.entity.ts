@@ -1,5 +1,5 @@
-import { AccountType } from '../enum/account.enum';
-import { User } from './user.entity';
+import { AccountType } from '../../../user/domain/enum/account.enum';
+import { User } from '../../../user/domain/entity/user.entity';
 
 export class Account {
   id: number;

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MerchantResolver } from './merchant.resolver';
+import { MerchantResolver } from './presentation/merchant.resolver';
 import { RepositoryModule } from 'src/infrastructure/typeorm/repository.module';
 
 @Module({

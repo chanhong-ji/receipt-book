@@ -1,8 +1,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserFactory } from './domain/user.factory';
+import { UserFactory } from '../domain/user.factory';
 import { Public } from 'src/common/auth/decorator/public.decorator';
-import { CreateUserInput, CreateUserOutput } from './presentation/dtos/create-user.dto';
-import { LoginInput, LoginOutput } from './presentation/dtos/login.dto';
+import { CreateUserInput, CreateUserOutput } from './dtos/create-user.dto';
+import { LoginInput, LoginOutput } from './dtos/login.dto';
 
 @Resolver()
 export class UserResolver {
