@@ -4,6 +4,7 @@ import { User } from 'src/modules/user/domain/entity/user.entity';
 import { AuthUser } from 'src/common/auth/decorator/auth-user.decorator';
 import { FindCategoriesOutput } from './dtos/find-categories.dto';
 import { CreateCategoryInput, CreateCategoryOutput } from './dtos/create-category.dto';
+import { UpdateCategoryInput, UpdateCategoryOutput } from './dtos/update-category.dto';
 
 @Resolver()
 export class CategoryResolver {
@@ -24,6 +25,18 @@ export class CategoryResolver {
     @AuthUser() user: User,
   ): Promise<CreateCategoryOutput> {
     const category = await this.factory.createCategory(input, user);
+    return {
+      ok: true,
+      category,
+    };
+  }
+
+  @Mutation(() => UpdateCategoryOutput)
+  async updateCategory(
+    @Args('UpdateCategoryInput') input: UpdateCategoryInput,
+    @AuthUser() user: User,
+  ): Promise<UpdateCategoryOutput> {
+    const category = await this.factory.updateCategory(input, user);
     return {
       ok: true,
       category,
