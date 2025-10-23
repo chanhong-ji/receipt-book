@@ -11,4 +11,19 @@ export class TypeormCategoryRepository implements CategoryRepository {
     @InjectRepository(CategoryModel)
     private readonly repository: Repository<CategoryModel>,
   ) {}
+
+  async findAll(userId: number): Promise<Category[]> {
+    const models = await this.repository.find({ where: { user: { id: userId } } });
+    return models.map(this.toEntity);
+  }
+
+  toEntity(model: CategoryModel): Category {
+    const category = new Category();
+    category.id = model.id;
+    category.name = model.name;
+    category.sortOrder = model.sortOrder;
+    category.createdAt = model.createdAt;
+    category.updatedAt = model.updatedAt;
+    return category;
+  }
 }

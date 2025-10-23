@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { AccountType } from '../../../user/domain/enum/account.enum';
 
-@ObjectType()
+@ObjectType({ isAbstract: true })
 export class AccountDto {
   @Field(() => Int, { description: '결제 수단 ID' })
   id: number;
