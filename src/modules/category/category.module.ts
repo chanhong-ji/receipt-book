@@ -3,6 +3,7 @@ import { RepositoryModule } from 'src/infrastructure/typeorm/repository.module';
 import { CategoryResolver } from './presentation/category.resolver';
 import { CategoryFactory } from './domain/category.factory';
 import { FindCategoriesUsecase } from './domain/usecases/find-categories.usecase';
+import { CreateCategoryUsecase } from './domain/usecases/create-category.usecase';
 
 @Module({
   imports: [RepositoryModule],
@@ -11,6 +12,7 @@ import { FindCategoriesUsecase } from './domain/usecases/find-categories.usecase
     CategoryFactory,
     // Usecases
     FindCategoriesUsecase,
+    CreateCategoryUsecase,
   ],
 })
 export class CategoryModule {}

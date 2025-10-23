@@ -13,6 +13,9 @@ export enum ErrorCode {
   PERMISSION_DENIED = 'PERMISSION_DENIED',
   PASSWORD_WRONG = 'PASSWORD_WRONG',
   ACCOUNT_ALREADY_EXISTS = 'ACCOUNT_ALREADY_EXISTS',
+
+  CATEGORY_LIMIT_EXCEEDED = 'CATEGORY_LIMIT_EXCEEDED',
+  CATEGORY_ALREADY_EXISTS = 'CATEGORY_ALREADY_EXISTS',
 }
 
 export interface ErrorDetail {
@@ -82,6 +85,18 @@ export class ErrorService {
     [ErrorCode.ACCOUNT_ALREADY_EXISTS]: {
       code: ErrorCode.ACCOUNT_ALREADY_EXISTS,
       description: '동일한 이름의 결제 수단이 이미 존재합니다',
+      statusCode: 400,
+      logLevel: 'log',
+    },
+    [ErrorCode.CATEGORY_LIMIT_EXCEEDED]: {
+      code: ErrorCode.CATEGORY_LIMIT_EXCEEDED,
+      description: '카테고리 개수가 초과되었습니다',
+      statusCode: 400,
+      logLevel: 'log',
+    },
+    [ErrorCode.CATEGORY_ALREADY_EXISTS]: {
+      code: ErrorCode.CATEGORY_ALREADY_EXISTS,
+      description: '동일한 이름의 카테고리가 이미 존재합니다',
       statusCode: 400,
       logLevel: 'log',
     },
