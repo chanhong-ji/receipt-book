@@ -5,6 +5,7 @@ import { AuthUser } from 'src/common/auth/decorator/auth-user.decorator';
 import { FindCategoriesOutput } from './dtos/find-categories.dto';
 import { CreateCategoryInput, CreateCategoryOutput } from './dtos/create-category.dto';
 import { UpdateCategoryInput, UpdateCategoryOutput } from './dtos/update-category.dto';
+import { DeleteCategoryInput, DeleteCategoryOutput } from './dtos/delete-category.dto';
 
 @Resolver()
 export class CategoryResolver {
@@ -40,6 +41,17 @@ export class CategoryResolver {
     return {
       ok: true,
       category,
+    };
+  }
+
+  @Mutation(() => DeleteCategoryOutput)
+  async deleteCategory(
+    @Args('DeleteCategoryInput') input: DeleteCategoryInput,
+    @AuthUser() user: User,
+  ): Promise<DeleteCategoryOutput> {
+    await this.factory.deleteCategory(input, user);
+    return {
+      ok: true,
     };
   }
 }

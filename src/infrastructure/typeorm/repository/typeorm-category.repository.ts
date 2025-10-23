@@ -22,6 +22,11 @@ export class TypeormCategoryRepository implements CategoryRepository {
     return this.toEntity(model);
   }
 
+  async updateMany(categories: Category[]): Promise<Category[]> {
+    const models = await this.repository.save(categories);
+    return models.map(this.toEntity);
+  }
+
   async save(category: Category, userId: number): Promise<Category> {
     const model = await this.repository.save(
       this.repository.create({
@@ -31,6 +36,10 @@ export class TypeormCategoryRepository implements CategoryRepository {
       }),
     );
     return this.toEntity(model);
+  }
+
+  async delete(id: number): Promise<void> {
+    await this.repository.delete(id);
   }
 
   toEntity(model: CategoryModel): Category {

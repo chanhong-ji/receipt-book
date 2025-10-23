@@ -5,6 +5,7 @@ import { CategoryFactory } from './domain/category.factory';
 import { FindCategoriesUsecase } from './domain/usecases/find-categories.usecase';
 import { CreateCategoryUsecase } from './domain/usecases/create-category.usecase';
 import { UpdateCategoryUsecase } from './domain/usecases/update-category.usecase';
+import { DeleteCategoryUsecase } from './domain/usecases/delete-category.usecase';
 
 @Module({
   imports: [RepositoryModule],
@@ -15,6 +16,7 @@ import { UpdateCategoryUsecase } from './domain/usecases/update-category.usecase
     FindCategoriesUsecase,
     CreateCategoryUsecase,
     UpdateCategoryUsecase,
+    DeleteCategoryUsecase,
   ],
 })
 export class CategoryModule {}

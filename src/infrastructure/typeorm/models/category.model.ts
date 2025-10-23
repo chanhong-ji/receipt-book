@@ -9,7 +9,7 @@ export class CategoryModel {
   @Column({ nullable: false })
   name: string;
 
-  @ManyToOne(() => UserModel, (user) => user.categories, { nullable: false })
+  @ManyToOne(() => UserModel, (user) => user.categories, { nullable: true })
   user: UserModel;
 
   @Column({ name: 'sort_order', nullable: false })

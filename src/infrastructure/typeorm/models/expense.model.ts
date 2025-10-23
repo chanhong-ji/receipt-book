@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserModel } from './user.model';
 import { MerchantModel } from './merchant.model';
 import { AccountModel } from './account.model';
+import { CategoryModel } from './category.model';
 
 @Entity({ name: 'expense' })
 export class ExpenseModel {
@@ -20,7 +21,10 @@ export class ExpenseModel {
   @ManyToOne(() => AccountModel, (account) => account.expenses, { nullable: false })
   account: AccountModel;
 
-  @ManyToOne(() => MerchantModel, { nullable: true })
+  @ManyToOne(() => CategoryModel, { nullable: true, cascade: true, onDelete: 'SET NULL' })
+  category?: CategoryModel;
+
+  @ManyToOne(() => MerchantModel, { nullable: true, cascade: true, onDelete: 'SET NULL' })
   merchant?: MerchantModel;
 
   @Column({ name: 'merchant_text', nullable: true })
@@ -29,7 +33,7 @@ export class ExpenseModel {
   @Column({ nullable: true })
   memo?: string;
 
-  @Column({ name: 'posted_at', type: 'timestamp', nullable: false })
+  @Column({ name: 'posted_at', type: 'date', nullable: false })
   postedAt: Date;
 
   @Column({ type: 'integer', nullable: false })
