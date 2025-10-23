@@ -11,4 +11,19 @@ export class TypeormMerchantRepository implements MerchantRepository {
     @InjectRepository(MerchantModel)
     private readonly repository: Repository<MerchantModel>,
   ) {}
+
+  async findById(id: number): Promise<Merchant | null> {
+    const model = await this.repository.findOne({ where: { id } });
+    if (!model) return null;
+    return this.toEntity(model);
+  }
+
+  toEntity(model: MerchantModel): Merchant {
+    const merchant = new Merchant();
+    merchant.id = model.id;
+    merchant.normalizedName = model.normalizedName;
+    merchant.createdAt = model.createdAt;
+    merchant.updatedAt = model.updatedAt;
+    return merchant;
+  }
 }

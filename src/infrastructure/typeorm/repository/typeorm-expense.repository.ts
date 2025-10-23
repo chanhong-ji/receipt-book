@@ -11,4 +11,42 @@ export class TypeormExpenseRepository implements ExpenseRepository {
     @InjectRepository(ExpenseModel)
     private readonly repository: Repository<ExpenseModel>,
   ) {}
+
+  async save(expense: Expense): Promise<Expense> {
+    const model = await this.repository.save(
+      this.repository.create({
+        name: expense.name,
+        amount: expense.amount,
+        postedAt: expense.postedAt,
+        year: expense.year,
+        month: expense.month,
+        date: expense.date,
+        user: { id: expense.userId },
+        account: { id: expense.accountId },
+        ...(expense.categoryId && { category: { id: expense.categoryId } }),
+        ...(expense.merchantId && { merchant: { id: expense.merchantId } }),
+        merchantText: expense.merchantText,
+        memo: expense.memo,
+      }),
+    );
+    return this.toEntity(model);
+  }
+
+  toEntity(model: ExpenseModel): Expense {
+    const expense = new Expense();
+    expense.id = model.id;
+    expense.name = model.name;
+    expense.amount = model.amount;
+    expense.postedAt = model.postedAt;
+    expense.year = model.year;
+    expense.month = model.month;
+    expense.date = model.date;
+    expense.userId = model.userId;
+    expense.accountId = model.accountId;
+    expense.categoryId = model.categoryId;
+    expense.merchantId = model.merchantId;
+    expense.merchantText = model.merchantText;
+    expense.memo = model.memo;
+    return expense;
+  }
 }

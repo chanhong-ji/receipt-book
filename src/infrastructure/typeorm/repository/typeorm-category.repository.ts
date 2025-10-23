@@ -17,6 +17,12 @@ export class TypeormCategoryRepository implements CategoryRepository {
     return models.map(this.toEntity);
   }
 
+  async findById(id: number, userId: number): Promise<Category | null> {
+    const model = await this.repository.findOne({ where: { id, user: { id: userId } } });
+    if (!model) return null;
+    return this.toEntity(model);
+  }
+
   async update(category: Category): Promise<Category> {
     const model = await this.repository.save(category);
     return this.toEntity(model);

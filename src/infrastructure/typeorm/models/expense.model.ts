@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { UserModel } from './user.model';
 import { MerchantModel } from './merchant.model';
 import { AccountModel } from './account.model';
@@ -15,14 +15,26 @@ export class ExpenseModel {
   @Column({ nullable: false })
   amount: number;
 
+  @RelationId((expense: ExpenseModel) => expense.user)
+  userId: number;
+
   @ManyToOne(() => UserModel, (user) => user.expenses, { nullable: false })
   user: UserModel;
+
+  @RelationId((expense: ExpenseModel) => expense.account)
+  accountId: number;
 
   @ManyToOne(() => AccountModel, (account) => account.expenses, { nullable: false })
   account: AccountModel;
 
+  @RelationId((expense: ExpenseModel) => expense.category)
+  categoryId?: number;
+
   @ManyToOne(() => CategoryModel, { nullable: true, cascade: true, onDelete: 'SET NULL' })
   category?: CategoryModel;
+
+  @RelationId((expense: ExpenseModel) => expense.merchant)
+  merchantId?: number;
 
   @ManyToOne(() => MerchantModel, { nullable: true, cascade: true, onDelete: 'SET NULL' })
   merchant?: MerchantModel;
