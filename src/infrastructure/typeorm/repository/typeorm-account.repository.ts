@@ -17,6 +17,17 @@ export class TypeormAccountRepository implements AccountRepository {
     return models.map(this.toEntity);
   }
 
+  async findById(id: number, userId: number): Promise<Account | null> {
+    const model = await this.repository.findOne({ where: { id, user: { id: userId } } });
+    if (!model) return null;
+    return this.toEntity(model);
+  }
+
+  async update(account: Account): Promise<Account> {
+    const model = await this.repository.save(account);
+    return this.toEntity(model);
+  }
+
   async save(account: Account, userId: number): Promise<Account> {
     const model = await this.repository.save(
       this.repository.create({

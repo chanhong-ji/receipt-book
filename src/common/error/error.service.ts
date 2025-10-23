@@ -4,9 +4,12 @@ export enum ErrorCode {
   EMAIL_ALREADY_EXISTS = 'EMAIL_ALREADY_EXISTS',
   NOT_AUTHENTICATED = 'NOT_AUTHENTICATED',
   NOT_AUTHORIZED = 'NOT_AUTHORIZED',
+
   CATEGORY_NOT_FOUND = 'CATEGORY_NOT_FOUND',
   MERCHANT_NOT_FOUND = 'MERCHANT_NOT_FOUND',
   USER_NOT_FOUND = 'USER_NOT_FOUND',
+  ACCOUNT_NOT_FOUND = 'ACCOUNT_NOT_FOUND',
+
   PERMISSION_DENIED = 'PERMISSION_DENIED',
   PASSWORD_WRONG = 'PASSWORD_WRONG',
   ACCOUNT_ALREADY_EXISTS = 'ACCOUNT_ALREADY_EXISTS',
@@ -57,6 +60,12 @@ export class ErrorService {
       description: '사용자를 찾을 수 없습니다',
       statusCode: 404,
       logLevel: 'log',
+    },
+    [ErrorCode.ACCOUNT_NOT_FOUND]: {
+      code: ErrorCode.ACCOUNT_NOT_FOUND,
+      description: '결제 수단을 찾을 수 없습니다',
+      statusCode: 404,
+      logLevel: 'warn',
     },
     [ErrorCode.PERMISSION_DENIED]: {
       code: ErrorCode.PERMISSION_DENIED,

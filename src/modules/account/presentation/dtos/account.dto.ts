@@ -1,9 +1,8 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { AccountType } from '../../../user/domain/enum/account.enum';
-import { Account } from '../../domain/entity/account.entity';
 
 @ObjectType()
-export class AccountDto implements Account {
+export class AccountDto {
   @Field(() => Int, { description: '결제 수단 ID' })
   id: number;
 

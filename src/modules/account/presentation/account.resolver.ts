@@ -4,6 +4,7 @@ import { FindAccountsOutput } from './dtos/find-accounts.dto';
 import { AuthUser } from 'src/common/auth/decorator/auth-user.decorator';
 import { User } from 'src/modules/user/domain/entity/user.entity';
 import { CreateAccountInput, CreateAccountOutput } from './dtos/create-accout.dto';
+import { UpdateAccountInput, UpdateAccountOutput } from './dtos/update-account.dto';
 
 @Resolver()
 export class AccountResolver {
@@ -24,6 +25,18 @@ export class AccountResolver {
     @AuthUser() user: User,
   ): Promise<CreateAccountOutput> {
     const account = await this.factory.createAccount(input, user);
+    return {
+      ok: true,
+      account,
+    };
+  }
+
+  @Mutation(() => UpdateAccountOutput)
+  async updateAccount(
+    @Args('UpdateAccountInput') input: UpdateAccountInput,
+    @AuthUser() user: User,
+  ): Promise<UpdateAccountOutput> {
+    const account = await this.factory.updateAccount(input, user);
     return {
       ok: true,
       account,

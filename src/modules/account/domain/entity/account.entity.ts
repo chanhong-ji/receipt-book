@@ -18,4 +18,22 @@ export class Account {
     account.isActive = true;
     return account;
   }
+
+  update(input: IAccountUpdate): void {
+    if (input.name) {
+      this.name = input.name;
+    }
+    if (input.type) {
+      this.type = input.type;
+    }
+    if (input.isActive != null) {
+      this.isActive = input.isActive;
+    }
+  }
+}
+
+interface IAccountUpdate {
+  name?: string;
+  type?: AccountType;
+  isActive?: boolean;
 }

@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { AccountFactory } from './domain/account.factory';
 import { FindAccountsUsecase } from './domain/usecases/find-accounts.usecase';
 import { CreateAccountUsecase } from './domain/usecases/create-accounts.usecase';
+import { UpdateAccountUsecase } from './domain/usecases/update-account.usecase';
 
 @Module({
   imports: [RepositoryModule],
@@ -13,6 +14,7 @@ import { CreateAccountUsecase } from './domain/usecases/create-accounts.usecase'
     // Usecases
     FindAccountsUsecase,
     CreateAccountUsecase,
+    UpdateAccountUsecase,
   ],
 })
 export class AccountModule {}
