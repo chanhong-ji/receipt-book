@@ -1,7 +1,7 @@
-import { ICreateExpenseInput } from '../../application/dtos/create-expense.dto';
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { ICreateExpenseInput } from '../../application/dtos/create-expense.dto';
 import { ExpenseDto } from './expense.dto';
-import { IsInt, Min } from 'class-validator';
+import { IsInt, IsOptional, Min } from 'class-validator';
 
 @InputType()
 export class CreateExpenseInput implements ICreateExpenseInput {
@@ -20,10 +20,12 @@ export class CreateExpenseInput implements ICreateExpenseInput {
   accountId: number;
 
   @Field(() => Int, { description: '카테고리 ID', nullable: true })
+  @IsOptional()
   @IsInt()
   categoryId?: number;
 
   @Field(() => Int, { description: '상점 ID', nullable: true })
+  @IsOptional()
   @IsInt()
   merchantId?: number;
 

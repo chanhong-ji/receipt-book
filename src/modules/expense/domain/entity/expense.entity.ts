@@ -11,9 +11,9 @@ export class Expense {
   year: number;
   month: number;
   date: number;
-  userId: number;
+  userId?: number;
   user?: User;
-  accountId: number;
+  accountId?: number;
   account?: Account;
   categoryId?: number;
   category?: Category;
@@ -38,6 +38,33 @@ export class Expense {
     expense.memo = input.memo;
     return expense;
   }
+
+  update(input: IUpdate): void {
+    if (input.name) {
+      this.name = input.name;
+    }
+    if (input.amount) {
+      this.amount = input.amount;
+    }
+    if (input.postedAt) {
+      this.postedAt = input.postedAt;
+      this.year = input.postedAt.getFullYear();
+      this.month = input.postedAt.getMonth() + 1;
+      this.date = input.postedAt.getDate();
+    }
+    if (input.categoryId) {
+      this.categoryId = input.categoryId;
+    }
+    if (input.merchantId) {
+      this.merchantId = input.merchantId;
+    }
+    if (input.merchantText) {
+      this.merchantText = input.merchantText;
+    }
+    if (input.memo) {
+      this.memo = input.memo;
+    }
+  }
 }
 
 interface ICreate {
@@ -50,4 +77,14 @@ interface ICreate {
   memo?: string;
   categoryId?: number;
   merchantId?: number;
+}
+
+interface IUpdate {
+  name?: string;
+  amount?: number;
+  postedAt?: Date;
+  categoryId?: number;
+  merchantId?: number;
+  merchantText?: string;
+  memo?: string;
 }

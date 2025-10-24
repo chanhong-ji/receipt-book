@@ -3,6 +3,7 @@ import { ExpenseResolver } from './presentation/expense.resolver';
 import { RepositoryModule } from 'src/infrastructure/typeorm/repository.module';
 import { ExpenseFactory } from './domain/expense.factory';
 import { CreateExpenseUsecase } from './domain/usecases/create-expense.usecase';
+import { UpdateExpenseUsecase } from './domain/usecases/update-expense.usecase';
 
 @Module({
   imports: [RepositoryModule],
@@ -11,6 +12,7 @@ import { CreateExpenseUsecase } from './domain/usecases/create-expense.usecase';
     ExpenseFactory,
     // Usecases
     CreateExpenseUsecase,
+    UpdateExpenseUsecase,
   ],
 })
 export class ExpenseModule {}

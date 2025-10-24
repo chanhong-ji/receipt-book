@@ -14,8 +14,8 @@ export class ExpenseDto {
   @Field(() => Date, { description: '지출 날짜' })
   postedAt: Date;
 
-  @Field(() => Int, { description: '계좌 ID' })
-  accountId: number;
+  @Field(() => Int, { description: '계좌 ID', nullable: true })
+  accountId?: number;
 
   @Field(() => Int, { description: '카테고리 ID', nullable: true })
   categoryId?: number;

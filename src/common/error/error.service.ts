@@ -9,6 +9,7 @@ export enum ErrorCode {
   MERCHANT_NOT_FOUND = 'MERCHANT_NOT_FOUND',
   USER_NOT_FOUND = 'USER_NOT_FOUND',
   ACCOUNT_NOT_FOUND = 'ACCOUNT_NOT_FOUND',
+  EXPENSE_NOT_FOUND = 'EXPENSE_NOT_FOUND',
 
   PERMISSION_DENIED = 'PERMISSION_DENIED',
   PASSWORD_WRONG = 'PASSWORD_WRONG',
@@ -99,6 +100,12 @@ export class ErrorService {
       description: '동일한 이름의 카테고리가 이미 존재합니다',
       statusCode: 400,
       logLevel: 'log',
+    },
+    [ErrorCode.EXPENSE_NOT_FOUND]: {
+      code: ErrorCode.EXPENSE_NOT_FOUND,
+      description: '지출을 찾을 수 없습니다',
+      statusCode: 404,
+      logLevel: 'warn',
     },
   };
 
