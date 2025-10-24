@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { ExpenseRepository } from 'src/modules/expense/application/expense.repository';
 import { ExpenseModel } from '../models/expense.model';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Expense } from 'src/modules/expense/domain/entity/expense.entity';
+import { IFindExpenseMonthlyInput } from 'src/modules/expense/application/dtos/find-expense-monthly.dto';
+import { User } from 'src/modules/user/domain/entity/user.entity';
 
 @Injectable()
 export class TypeormExpenseRepository implements ExpenseRepository {
@@ -25,9 +27,9 @@ export class TypeormExpenseRepository implements ExpenseRepository {
       ...(expense.amount && { amount: expense.amount }),
       ...(expense.postedAt && {
         postedAt: expense.postedAt,
-        year: expense.year,
-        month: expense.month,
-        date: expense.date,
+        year: expense.postedAt.getFullYear(),
+        month: expense.postedAt.getMonth() + 1,
+        date: expense.postedAt.getDate(),
       }),
       ...(expense.accountId && { account: { id: expense.accountId } }),
       ...(expense.categoryId && { category: { id: expense.categoryId } }),
@@ -44,9 +46,9 @@ export class TypeormExpenseRepository implements ExpenseRepository {
         name: expense.name,
         amount: expense.amount,
         postedAt: expense.postedAt,
-        year: expense.year,
-        month: expense.month,
-        date: expense.date,
+        year: expense.postedAt.getFullYear(),
+        month: expense.postedAt.getMonth() + 1,
+        date: expense.postedAt.getDate(),
         user: { id: expense.userId },
         account: { id: expense.accountId },
         ...(expense.categoryId && { category: { id: expense.categoryId } }),
@@ -62,15 +64,28 @@ export class TypeormExpenseRepository implements ExpenseRepository {
     await this.repository.delete(id);
   }
 
+  async findMonthly(input: IFindExpenseMonthlyInput, user: User) {
+    const { year, month, categoryIds, accountIds, skip, take } = input;
+    const [models, total] = await this.repository.findAndCount({
+      where: {
+        user: { id: user.id },
+        year,
+        month,
+        ...(categoryIds && { category: { id: In(categoryIds) } }),
+        ...(accountIds && { account: { id: In(accountIds) } }),
+      },
+      skip,
+      take,
+    });
+    return { expenses: models.map(this.toEntity), total };
+  }
+
   toEntity(model: ExpenseModel): Expense {
     const expense = new Expense();
     expense.id = model.id;
     expense.name = model.name;
     expense.amount = model.amount;
     expense.postedAt = new Date(model.postedAt);
-    expense.year = model.year;
-    expense.month = model.month;
-    expense.date = model.date;
     expense.userId = model.userId;
     expense.accountId = model.accountId;
     expense.categoryId = model.categoryId;

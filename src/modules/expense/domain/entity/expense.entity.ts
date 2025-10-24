@@ -8,9 +8,6 @@ export class Expense {
   name: string;
   amount: number;
   postedAt: Date; // YYYY-MM-DD
-  year: number;
-  month: number;
-  date: number;
   userId?: number;
   user?: User;
   accountId?: number;
@@ -27,9 +24,6 @@ export class Expense {
     expense.name = input.name;
     expense.amount = input.amount;
     expense.postedAt = input.postedAt;
-    expense.year = input.postedAt.getFullYear();
-    expense.month = input.postedAt.getMonth() + 1;
-    expense.date = input.postedAt.getDate();
     expense.userId = input.userId;
     expense.accountId = input.accountId;
     expense.categoryId = input.categoryId;
@@ -48,9 +42,6 @@ export class Expense {
     }
     if (input.postedAt) {
       this.postedAt = input.postedAt;
-      this.year = input.postedAt.getFullYear();
-      this.month = input.postedAt.getMonth() + 1;
-      this.date = input.postedAt.getDate();
     }
     if (input.categoryId) {
       this.categoryId = input.categoryId;

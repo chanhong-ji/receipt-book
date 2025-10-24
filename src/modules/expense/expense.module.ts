@@ -5,6 +5,7 @@ import { ExpenseFactory } from './domain/expense.factory';
 import { CreateExpenseUsecase } from './domain/usecases/create-expense.usecase';
 import { UpdateExpenseUsecase } from './domain/usecases/update-expense.usecase';
 import { DeleteExpenseUsecase } from './domain/usecases/delete-expense.usecase';
+import { FindExpenseMonthlyUsecase } from './domain/usecases/find-expense-monthly.usecase';
 
 @Module({
   imports: [RepositoryModule],
@@ -15,6 +16,7 @@ import { DeleteExpenseUsecase } from './domain/usecases/delete-expense.usecase';
     CreateExpenseUsecase,
     UpdateExpenseUsecase,
     DeleteExpenseUsecase,
+    FindExpenseMonthlyUsecase,
   ],
 })
 export class ExpenseModule {}

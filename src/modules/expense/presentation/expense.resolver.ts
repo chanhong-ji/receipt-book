@@ -1,11 +1,11 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ExpenseFactory } from '../domain/expense.factory';
 import { AuthUser } from 'src/common/auth/decorator/auth-user.decorator';
 import { User } from 'src/modules/user/domain/entity/user.entity';
-import { CreateExpenseInput } from './dtos/create-expense.dto';
-import { CreateExpenseOutput } from './dtos/create-expense.dto';
+import { CreateExpenseInput, CreateExpenseOutput } from './dtos/create-expense.dto';
 import { UpdateExpenseInput, UpdateExpenseOutput } from './dtos/update-expense.dto';
 import { DeleteExpenseInput, DeleteExpenseOutput } from './dtos/delete-expense.dto';
+import { FindExpenseMonthlyInput, FindExpenseMonthlyOutput } from './dtos/find-expense-monthly.dto';
 
 @Resolver()
 export class ExpenseResolver {
@@ -42,5 +42,14 @@ export class ExpenseResolver {
   ): Promise<DeleteExpenseOutput> {
     await this.factory.deleteExpense(input, user);
     return { ok: true };
+  }
+
+  @Query(() => FindExpenseMonthlyOutput)
+  async findExpenseMonthly(
+    @Args('FindExpenseMonthlyInput') input: FindExpenseMonthlyInput,
+    @AuthUser() user: User,
+  ): Promise<FindExpenseMonthlyOutput> {
+    const { expenses, total } = await this.factory.findExpenseMonthly(input, user);
+    return { ok: true, expenses, total };
   }
 }
