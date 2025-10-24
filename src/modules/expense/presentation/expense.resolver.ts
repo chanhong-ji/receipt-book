@@ -5,6 +5,7 @@ import { User } from 'src/modules/user/domain/entity/user.entity';
 import { CreateExpenseInput } from './dtos/create-expense.dto';
 import { CreateExpenseOutput } from './dtos/create-expense.dto';
 import { UpdateExpenseInput, UpdateExpenseOutput } from './dtos/update-expense.dto';
+import { DeleteExpenseInput, DeleteExpenseOutput } from './dtos/delete-expense.dto';
 
 @Resolver()
 export class ExpenseResolver {
@@ -32,5 +33,14 @@ export class ExpenseResolver {
       ok: true,
       expense,
     };
+  }
+
+  @Mutation(() => DeleteExpenseOutput)
+  async deleteExpense(
+    @Args('DeleteExpenseInput') input: DeleteExpenseInput,
+    @AuthUser() user: User,
+  ): Promise<DeleteExpenseOutput> {
+    await this.factory.deleteExpense(input, user);
+    return { ok: true };
   }
 }

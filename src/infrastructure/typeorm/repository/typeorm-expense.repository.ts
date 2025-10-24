@@ -58,6 +58,10 @@ export class TypeormExpenseRepository implements ExpenseRepository {
     return this.toEntity(model);
   }
 
+  async delete(id: number): Promise<void> {
+    await this.repository.delete(id);
+  }
+
   toEntity(model: ExpenseModel): Expense {
     const expense = new Expense();
     expense.id = model.id;
