@@ -3,7 +3,7 @@ import { User } from '../../../user/domain/entity/user.entity';
 export class Budget {
   id: number;
   user?: User;
-  yearMonth: Date; // YYYY-MM-01 00:00:00
+  yearMonth: string; // YYYY-MM-01
   totalAmount: number;
   createdAt: Date;
   updatedAt: Date;

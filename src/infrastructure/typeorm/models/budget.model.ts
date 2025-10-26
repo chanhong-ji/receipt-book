@@ -11,7 +11,7 @@ export class BudgetModel {
   user: UserModel;
 
   @Column({ name: 'year_month', type: 'date', nullable: false })
-  yearMonth: Date; // YYYY-MM-01 00:00:00
+  yearMonth: string; // YYYY-MM-01
 
   @Column({ name: 'total_amount', nullable: false })
   totalAmount: number;

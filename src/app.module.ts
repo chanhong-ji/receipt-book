@@ -13,6 +13,7 @@ import { ExpenseModule } from './modules/expense/expense.module';
 import { MerchantModule } from './modules/merchant/merchant.module';
 import { AuthModule } from './common/auth/auth.module';
 import { AccountModule } from './modules/account/account.module';
+import { BudgetModule } from './modules/budget/budget.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { AccountModule } from './modules/account/account.module';
     CategoryModule,
     ExpenseModule,
     MerchantModule,
+    BudgetModule,
   ],
   providers: [
     {
