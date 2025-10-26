@@ -3,6 +3,7 @@ import { BudgetFactory } from '../domain/budget.factory';
 import { AuthUser } from 'src/common/auth/decorator/auth-user.decorator';
 import { User } from 'src/modules/user/domain/entity/user.entity';
 import { UpsertBudgetInput, UpsertBudgetOutput } from './dtos/upsert-budget.dto';
+import { DeleteBudgetInput, DeleteBudgetOutput } from './dtos/delete-budget.dto';
 
 @Resolver()
 export class BudgetResolver {
@@ -17,6 +18,17 @@ export class BudgetResolver {
     return {
       ok: true,
       budget,
+    };
+  }
+
+  @Mutation(() => DeleteBudgetOutput)
+  async deleteBudget(
+    @Args('DeleteBudgetInput') input: DeleteBudgetInput,
+    @AuthUser() user: User,
+  ): Promise<DeleteBudgetOutput> {
+    await this.factory.deleteBudget(input, user);
+    return {
+      ok: true,
     };
   }
 }

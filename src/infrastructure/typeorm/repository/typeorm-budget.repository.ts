@@ -29,6 +29,11 @@ export class TypeormBudgetRepository implements BudgetRepository {
     return this.toEntity(model);
   }
 
+  async findById(id: number, userId: number): Promise<Budget | null> {
+    const model = await this.repository.findOne({ where: { id, user: { id: userId } } });
+    return model ? this.toEntity(model) : null;
+  }
+
   async findByYearMonth(yearMonth: string, user: User): Promise<Budget | null> {
     const model = await this.repository.findOne({
       where: {
@@ -36,8 +41,11 @@ export class TypeormBudgetRepository implements BudgetRepository {
         user: { id: user.id },
       },
     });
-    if (!model) return null;
-    return this.toEntity(model);
+    return model ? this.toEntity(model) : null;
+  }
+
+  async delete(id: number): Promise<void> {
+    await this.repository.delete(id);
   }
 
   toEntity(model: BudgetModel): Budget {

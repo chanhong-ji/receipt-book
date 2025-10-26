@@ -10,6 +10,7 @@ export enum ErrorCode {
   USER_NOT_FOUND = 'USER_NOT_FOUND',
   ACCOUNT_NOT_FOUND = 'ACCOUNT_NOT_FOUND',
   EXPENSE_NOT_FOUND = 'EXPENSE_NOT_FOUND',
+  BUDGET_NOT_FOUND = 'BUDGET_NOT_FOUND',
 
   PERMISSION_DENIED = 'PERMISSION_DENIED',
   PASSWORD_WRONG = 'PASSWORD_WRONG',
@@ -104,6 +105,12 @@ export class ErrorService {
     [ErrorCode.EXPENSE_NOT_FOUND]: {
       code: ErrorCode.EXPENSE_NOT_FOUND,
       description: '지출을 찾을 수 없습니다',
+      statusCode: 404,
+      logLevel: 'warn',
+    },
+    [ErrorCode.BUDGET_NOT_FOUND]: {
+      code: ErrorCode.BUDGET_NOT_FOUND,
+      description: '예산을 찾을 수 없습니다',
       statusCode: 404,
       logLevel: 'warn',
     },

@@ -3,6 +3,7 @@ import { RepositoryModule } from 'src/infrastructure/typeorm/repository.module';
 import { BudgetResolver } from './presentation/budget.resolver';
 import { BudgetFactory } from './domain/budget.factory';
 import { UpsertBudgetUsecase } from './domain/usecases/upsert-budget.usecase';
+import { DeleteBudgetUsecase } from './domain/usecases/delete-budget.usecase';
 
 @Module({
   imports: [RepositoryModule],
@@ -11,6 +12,7 @@ import { UpsertBudgetUsecase } from './domain/usecases/upsert-budget.usecase';
     BudgetFactory,
     // Usecases
     UpsertBudgetUsecase,
+    DeleteBudgetUsecase,
   ],
 })
 export class BudgetModule {}
