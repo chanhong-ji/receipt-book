@@ -6,6 +6,7 @@ import { CreateExpenseInput, CreateExpenseOutput } from './dtos/create-expense.d
 import { UpdateExpenseInput, UpdateExpenseOutput } from './dtos/update-expense.dto';
 import { DeleteExpenseInput, DeleteExpenseOutput } from './dtos/delete-expense.dto';
 import { FindExpenseMonthlyInput, FindExpenseMonthlyOutput } from './dtos/find-expense-monthly.dto';
+import { FindMonthlyExpenseTotalInput, FindMonthlyExpenseTotalOutput } from './dtos/find-monthly-expense-total.dto';
 
 @Resolver()
 export class ExpenseResolver {
@@ -51,5 +52,14 @@ export class ExpenseResolver {
   ): Promise<FindExpenseMonthlyOutput> {
     const { expenses, totalCount } = await this.factory.findExpenseMonthly(input, user);
     return { ok: true, expenses, totalCount };
+  }
+
+  @Query(() => FindMonthlyExpenseTotalOutput)
+  async findMonthlyExpenseTotal(
+    @Args('FindMonthlyExpenseTotalInput') input: FindMonthlyExpenseTotalInput,
+    @AuthUser() user: User,
+  ): Promise<FindMonthlyExpenseTotalOutput> {
+    const { months } = await this.factory.findMonthlyExpenseTotal(input, user);
+    return { ok: true, months };
   }
 }

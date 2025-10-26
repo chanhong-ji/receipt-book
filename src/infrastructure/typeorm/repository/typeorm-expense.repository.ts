@@ -6,6 +6,7 @@ import { In, Repository } from 'typeorm';
 import { Expense } from 'src/modules/expense/domain/entity/expense.entity';
 import { IFindExpenseMonthlyInput } from 'src/modules/expense/application/dtos/find-expense-monthly.dto';
 import { User } from 'src/modules/user/domain/entity/user.entity';
+import { IFindMonthlyExpenseTotalInput } from 'src/modules/expense/application/dtos/find-monthly-expense-total.dto';
 
 @Injectable()
 export class TypeormExpenseRepository implements ExpenseRepository {
@@ -78,6 +79,20 @@ export class TypeormExpenseRepository implements ExpenseRepository {
       take,
     });
     return { expenses: models.map(this.toEntity), totalCount };
+  }
+
+  async findMonthlyExpenseTotal(input: IFindMonthlyExpenseTotalInput, user: User) {
+    const { year, months } = input;
+    const result = await this.repository
+      .createQueryBuilder('expense')
+      .select('month, SUM(amount) as "totalExpense"')
+      .where('expense.userId = :userId', { userId: user.id })
+      .andWhere('expense.year = :year', { year })
+      .andWhere('expense.month IN (:...months)', { months })
+      .groupBy('expense.month')
+      .getRawMany();
+
+    return { months: result.map((model) => ({ month: model.month, totalExpense: Number(model.totalExpense) })) };
   }
 
   toEntity(model: ExpenseModel): Expense {

@@ -5,10 +5,15 @@ import { ICreateExpenseInput } from '../application/dtos/create-expense.dto';
 import { IUpdateExpenseInput } from '../application/dtos/update-expense.dto';
 import { IDeleteExpenseInput } from '../application/dtos/delete-expense.dto';
 import { IFindExpenseMonthlyInput, IFindExpenseMonthlyOutput } from '../application/dtos/find-expense-monthly.dto';
+import {
+  IFindMonthlyExpenseTotalInput,
+  IFindMonthlyExpenseTotalOutput,
+} from '../application/dtos/find-monthly-expense-total.dto';
 import { CreateExpenseUsecase } from './usecases/create-expense.usecase';
 import { UpdateExpenseUsecase } from './usecases/update-expense.usecase';
 import { DeleteExpenseUsecase } from './usecases/delete-expense.usecase';
 import { FindExpenseMonthlyUsecase } from './usecases/find-expense-monthly.usecase';
+import { FindMonthlyExpenseTotalUsecase } from './usecases/find-monthly-expense-total.usecase';
 
 @Injectable()
 export class ExpenseFactory {
@@ -17,6 +22,7 @@ export class ExpenseFactory {
     private readonly updateExpenseUsecase: UpdateExpenseUsecase,
     private readonly deleteExpenseUsecase: DeleteExpenseUsecase,
     private readonly findExpenseMonthlyUsecase: FindExpenseMonthlyUsecase,
+    private readonly findMonthlyExpenseTotalUsecase: FindMonthlyExpenseTotalUsecase,
   ) {}
 
   createExpense(input: ICreateExpenseInput, user: User): Promise<Expense> {
@@ -33,5 +39,9 @@ export class ExpenseFactory {
 
   findExpenseMonthly(input: IFindExpenseMonthlyInput, user: User): Promise<IFindExpenseMonthlyOutput> {
     return this.findExpenseMonthlyUsecase.execute(input, user);
+  }
+
+  findMonthlyExpenseTotal(input: IFindMonthlyExpenseTotalInput, user: User): Promise<IFindMonthlyExpenseTotalOutput> {
+    return this.findMonthlyExpenseTotalUsecase.execute(input, user);
   }
 }
