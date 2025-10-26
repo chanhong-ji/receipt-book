@@ -1,4 +1,4 @@
-import { User } from './user.entity';
+import { User } from '../../../user/domain/entity/user.entity';
 
 export class Budget {
   id: number;
