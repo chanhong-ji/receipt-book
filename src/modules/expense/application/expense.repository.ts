@@ -8,5 +8,5 @@ export interface ExpenseRepository {
   save(expense: Expense): Promise<Expense>;
   delete(id: number): Promise<void>;
 
-  findMonthly(input: IFindExpenseMonthlyInput, user: User): Promise<{ expenses: Expense[]; total: number }>;
+  findMonthly(input: IFindExpenseMonthlyInput, user: User): Promise<{ expenses: Expense[]; totalCount: number }>;
 }

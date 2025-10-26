@@ -11,5 +11,5 @@ export interface IFindExpenseMonthlyInput {
 
 export interface IFindExpenseMonthlyOutput {
   expenses: Expense[];
-  total: number;
+  totalCount: number;
 }

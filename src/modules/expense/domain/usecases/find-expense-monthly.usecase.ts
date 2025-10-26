@@ -8,7 +8,7 @@ export class FindExpenseMonthlyUsecase {
   constructor(@Inject('ExpenseRepository') private readonly expenseRepository: ExpenseRepository) {}
 
   async execute(input: IFindExpenseMonthlyInput, user: User) {
-    const { expenses, total } = await this.expenseRepository.findMonthly(input, user);
-    return { expenses, total };
+    const { expenses, totalCount } = await this.expenseRepository.findMonthly(input, user);
+    return { expenses, totalCount };
   }
 }

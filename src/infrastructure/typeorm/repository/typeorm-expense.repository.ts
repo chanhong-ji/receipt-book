@@ -66,7 +66,7 @@ export class TypeormExpenseRepository implements ExpenseRepository {
 
   async findMonthly(input: IFindExpenseMonthlyInput, user: User) {
     const { year, month, categoryIds, accountIds, skip, take } = input;
-    const [models, total] = await this.repository.findAndCount({
+    const [models, totalCount] = await this.repository.findAndCount({
       where: {
         user: { id: user.id },
         year,
@@ -77,7 +77,7 @@ export class TypeormExpenseRepository implements ExpenseRepository {
       skip,
       take,
     });
-    return { expenses: models.map(this.toEntity), total };
+    return { expenses: models.map(this.toEntity), totalCount };
   }
 
   toEntity(model: ExpenseModel): Expense {

@@ -39,5 +39,5 @@ export class FindExpenseMonthlyOutput implements IFindExpenseMonthlyOutput {
   expenses: Expense[];
 
   @Field(() => Int, { description: '총 건수', nullable: true })
-  total: number;
+  totalCount: number;
 }

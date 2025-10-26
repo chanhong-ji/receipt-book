@@ -49,7 +49,7 @@ export class ExpenseResolver {
     @Args('FindExpenseMonthlyInput') input: FindExpenseMonthlyInput,
     @AuthUser() user: User,
   ): Promise<FindExpenseMonthlyOutput> {
-    const { expenses, total } = await this.factory.findExpenseMonthly(input, user);
-    return { ok: true, expenses, total };
+    const { expenses, totalCount } = await this.factory.findExpenseMonthly(input, user);
+    return { ok: true, expenses, totalCount };
   }
 }
