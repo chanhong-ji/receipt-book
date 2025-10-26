@@ -7,6 +7,10 @@ import { Expense } from 'src/modules/expense/domain/entity/expense.entity';
 import { IFindExpenseMonthlyInput } from 'src/modules/expense/application/dtos/find-expense-monthly.dto';
 import { User } from 'src/modules/user/domain/entity/user.entity';
 import { IFindMonthlyExpenseTotalInput } from 'src/modules/expense/application/dtos/find-monthly-expense-total.dto';
+import {
+  IFindCategoryMonthlyExpenseInput,
+  IFindCategoryMonthlyExpenseOutput,
+} from 'src/modules/expense/application/dtos/find-category-monthly-expense.dto';
 
 @Injectable()
 export class TypeormExpenseRepository implements ExpenseRepository {
@@ -93,6 +97,24 @@ export class TypeormExpenseRepository implements ExpenseRepository {
       .getRawMany();
 
     return { months: result.map((model) => ({ month: model.month, totalExpense: Number(model.totalExpense) })) };
+  }
+
+  async findCategoryMonthly(
+    input: IFindCategoryMonthlyExpenseInput,
+    user: User,
+  ): Promise<{ categoryId: number; totalExpense: number }[]> {
+    const { year, months } = input;
+    const raw = await this.repository
+      .createQueryBuilder('expense')
+      .select('expense.categoryId', 'categoryId')
+      .addSelect('SUM(expense.amount)', 'totalExpense')
+      .where('expense.userId = :userId', { userId: user.id })
+      .andWhere('expense.year = :year', { year })
+      .andWhere('expense.month IN (:...months)', { months })
+      .groupBy('expense.categoryId')
+      .orderBy('"totalExpense"', 'DESC')
+      .getRawMany();
+    return raw;
   }
 
   toEntity(model: ExpenseModel): Expense {
