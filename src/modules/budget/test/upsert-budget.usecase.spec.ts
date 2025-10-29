@@ -3,11 +3,15 @@ import { UpsertBudgetUsecase } from '../domain/usecases/upsert-budget.usecase';
 import { BudgetRepository } from '../application/budget.repository';
 import { TypeormBudgetRepository } from 'src/infrastructure/typeorm/repository/typeorm-budget.repository';
 import { ErrorService } from 'src/common/error/error.service';
+import { CategoryRepository } from 'src/modules/category/application/category.repository';
+import { TypeormCategoryRepository } from 'src/infrastructure/typeorm/repository/typeorm-category.repository';
 jest.mock('src/infrastructure/typeorm/repository/typeorm-budget.repository');
+jest.mock('src/infrastructure/typeorm/repository/typeorm-category.repository');
 
 describe('UpsertBudgetUsecase', () => {
   let usecase: UpsertBudgetUsecase;
   let budgetRepository: Record<keyof BudgetRepository, jest.Mock>;
+  let categoryRepository: Record<keyof CategoryRepository, jest.Mock>;
   let errorService: ErrorService;
 
   beforeAll(async () => {
@@ -18,18 +22,24 @@ describe('UpsertBudgetUsecase', () => {
           provide: 'BudgetRepository',
           useClass: TypeormBudgetRepository,
         },
+        {
+          provide: 'CategoryRepository',
+          useClass: TypeormCategoryRepository,
+        },
         ErrorService,
       ],
     }).compile();
 
     usecase = moduleRef.get(UpsertBudgetUsecase);
     budgetRepository = moduleRef.get('BudgetRepository');
+    categoryRepository = moduleRef.get('CategoryRepository');
     errorService = moduleRef.get(ErrorService);
   });
 
   it('should be defined', () => {
     expect(usecase).toBeDefined();
     expect(budgetRepository).toBeDefined();
+    expect(categoryRepository).toBeDefined();
     expect(errorService).toBeDefined();
   });
 

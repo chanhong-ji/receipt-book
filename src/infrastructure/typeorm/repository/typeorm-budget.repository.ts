@@ -13,12 +13,13 @@ export class TypeormBudgetRepository implements BudgetRepository {
     private readonly repository: Repository<BudgetModel>,
   ) {}
 
-  async create(yearMonth: string, totalAmount: number, user: User): Promise<Budget> {
+  async create(yearMonth: string, totalAmount: number, user: User, categoryId?: number): Promise<Budget> {
     const savedModel = await this.repository.save(
       this.repository.create({
         yearMonth,
         totalAmount,
         user: { id: user.id },
+        category: { id: categoryId },
       }),
     );
     return this.toEntity(savedModel);
@@ -34,11 +35,12 @@ export class TypeormBudgetRepository implements BudgetRepository {
     return model ? this.toEntity(model) : null;
   }
 
-  async findByYearMonth(yearMonth: string, user: User): Promise<Budget | null> {
+  async findByYearMonth(yearMonth: string, user: User, categoryId?: number): Promise<Budget | null> {
     const model = await this.repository.findOne({
       where: {
         yearMonth,
         user: { id: user.id },
+        category: { id: categoryId },
       },
     });
     return model ? this.toEntity(model) : null;

@@ -2,6 +2,7 @@ import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { IUpsertBudgetInput, IUpsertBudgetOutput } from '../../application/dtos/upsert-budget.dto';
 import { Budget } from '../../domain/entity/budget.entity';
 import { BudgetDto } from './budget.dto';
+import { IsInt, IsOptional } from 'class-validator';
 
 @InputType()
 export class UpsertBudgetInput implements IUpsertBudgetInput {
@@ -13,6 +14,11 @@ export class UpsertBudgetInput implements IUpsertBudgetInput {
 
   @Field(() => Number, { description: '예산 금액' })
   totalAmount: number;
+
+  @Field(() => Int, { description: '카테고리 ID', nullable: true })
+  @IsOptional()
+  @IsInt()
+  categoryId?: number;
 }
 
 @ObjectType()
