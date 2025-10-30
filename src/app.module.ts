@@ -14,13 +14,14 @@ import { MerchantModule } from './modules/merchant/merchant.module';
 import { AuthModule } from './common/auth/auth.module';
 import { AccountModule } from './modules/account/account.module';
 import { BudgetModule } from './modules/budget/budget.module';
+import { join } from 'path';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       playground: false,
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'schema.gql'),
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
 

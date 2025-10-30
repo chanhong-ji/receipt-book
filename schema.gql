@@ -1,0 +1,439 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type CreateUserOutput {
+  ok: Boolean!
+  error: String
+
+  """생성된 유저 아이디"""
+  userId: Int
+}
+
+type LoginOutput {
+  ok: Boolean!
+  error: String
+
+  """사용자 ID"""
+  userId: Int
+
+  """토큰"""
+  token: String
+}
+
+type FindCategoriesOutput {
+  ok: Boolean!
+  error: String
+
+  """카테고리 목록"""
+  categories: [CategoryDto!]
+}
+
+type CategoryDto {
+  """카테고리 ID"""
+  id: Int!
+
+  """카테고리 이름"""
+  name: String!
+
+  """정렬 순서"""
+  sortOrder: Int!
+}
+
+type CreateCategoryOutput {
+  ok: Boolean!
+  error: String
+
+  """생성된 카테고리"""
+  category: CategoryDto
+}
+
+type UpdateCategoryOutput {
+  ok: Boolean!
+  error: String
+
+  """수정된 카테고리"""
+  category: CategoryDto
+}
+
+type DeleteCategoryOutput {
+  ok: Boolean!
+  error: String
+}
+
+type CreateExpenseOutput {
+  """성공 여부"""
+  ok: Boolean!
+
+  """에러 메시지"""
+  error: String
+
+  """지출 내역"""
+  expense: ExpenseDto
+}
+
+type ExpenseDto {
+  """지출 ID"""
+  id: Int!
+
+  """지출 이름"""
+  name: String!
+
+  """지출 금액"""
+  amount: Float!
+
+  """지출 날짜"""
+  postedAt: DateTime!
+
+  """계좌 ID"""
+  accountId: Int
+
+  """카테고리 ID"""
+  categoryId: Int
+
+  """상점 ID"""
+  merchantId: Int
+
+  """상점 이름"""
+  merchantText: String
+
+  """메모"""
+  memo: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type UpdateExpenseOutput {
+  """성공 여부"""
+  ok: Boolean!
+
+  """에러 메시지"""
+  error: String
+
+  """수정된 지출"""
+  expense: ExpenseDto
+}
+
+type DeleteExpenseOutput {
+  ok: Boolean!
+  error: String
+}
+
+type FindExpenseMonthlyOutput {
+  ok: Boolean!
+  error: String
+
+  """지출 목록"""
+  expenses: [ExpenseDto!]
+
+  """총 건수"""
+  totalCount: Int
+}
+
+type MonthlyExpenseTotalDto {
+  """월"""
+  month: Int!
+
+  """지출 합계"""
+  totalExpense: Float!
+}
+
+type FindMonthlyExpenseTotalOutput {
+  ok: Boolean!
+  error: String
+
+  """월별 지출 합계 목록"""
+  months: [MonthlyExpenseTotalDto!]
+}
+
+type CategoryExpense {
+  """카테고리 ID"""
+  categoryId: Int!
+
+  """총 지출"""
+  totalExpense: Float!
+}
+
+type FindCategoryMonthlyExpenseOutput {
+  ok: Boolean!
+  error: String
+  result: [CategoryExpense!]
+}
+
+type FindAccountsOutput {
+  ok: Boolean!
+  error: String
+
+  """결제 수단 목록"""
+  accounts: [AccountDto!]
+}
+
+type AccountDto {
+  """결제 수단 ID"""
+  id: Int!
+
+  """결제 수단 이름"""
+  name: String!
+
+  """결제 수단 활성 여부"""
+  isActive: Boolean!
+
+  """결제 수단 타입 (은행 계좌, 현금, 카드, 기타)"""
+  type: AccountType!
+
+  """결제 수단 생성 일시"""
+  createdAt: DateTime!
+
+  """결제 수단 수정 일시"""
+  updatedAt: DateTime!
+}
+
+enum AccountType {
+  BANK
+  CASH
+  CARD
+  OTHER
+}
+
+type CreateAccountOutput {
+  ok: Boolean!
+  error: String
+  account: AccountDto
+}
+
+type UpdateAccountOutput {
+  ok: Boolean!
+  error: String
+  account: AccountDto
+}
+
+type UpsertBudgetOutput {
+  """성공 여부"""
+  ok: Boolean!
+
+  """에러 메시지"""
+  error: String
+
+  """예산"""
+  budget: BudgetDto
+}
+
+type BudgetDto {
+  """예산 ID"""
+  id: Int!
+
+  """년월"""
+  yearMonth: String!
+
+  """예산 금액"""
+  totalAmount: Float!
+}
+
+type DeleteBudgetOutput {
+  """성공 여부"""
+  ok: Boolean!
+
+  """에러 메시지"""
+  error: String
+}
+
+type Query {
+  test: Boolean!
+  findAccounts: FindAccountsOutput!
+  findCategories: FindCategoriesOutput!
+  findExpenseMonthly(FindExpenseMonthlyInput: FindExpenseMonthlyInput!): FindExpenseMonthlyOutput!
+  findMonthlyExpenseTotal(FindMonthlyExpenseTotalInput: FindMonthlyExpenseTotalInput!): FindMonthlyExpenseTotalOutput!
+  findCategoryMonthlyExpense(FindCategoryMonthlyExpenseInput: FindCategoryMonthlyExpenseInput!): FindCategoryMonthlyExpenseOutput!
+}
+
+input FindExpenseMonthlyInput {
+  """연도"""
+  year: Int!
+
+  """월"""
+  month: Int!
+
+  """카테고리 ID"""
+  categoryIds: [Int!]
+
+  """결제 수단 ID"""
+  accountIds: [Int!]
+
+  """건너뛸 건수"""
+  skip: Int!
+
+  """조회할 건수"""
+  take: Int!
+}
+
+input FindMonthlyExpenseTotalInput {
+  """연도"""
+  year: Int!
+
+  """월"""
+  months: [Int!]!
+}
+
+input FindCategoryMonthlyExpenseInput {
+  """연도"""
+  year: Int!
+
+  """월 목록"""
+  months: [Int!]!
+}
+
+type Mutation {
+  createUser(CreateUserInput: CreateUserInput!): CreateUserOutput!
+  login(LoginInput: LoginInput!): LoginOutput!
+  createAccount(CreateAccountInput: CreateAccountInput!): CreateAccountOutput!
+  updateAccount(UpdateAccountInput: UpdateAccountInput!): UpdateAccountOutput!
+  createCategory(CreateCategoryInput: CreateCategoryInput!): CreateCategoryOutput!
+  updateCategory(UpdateCategoryInput: UpdateCategoryInput!): UpdateCategoryOutput!
+  deleteCategory(DeleteCategoryInput: DeleteCategoryInput!): DeleteCategoryOutput!
+  createExpense(CreateExpenseInput: CreateExpenseInput!): CreateExpenseOutput!
+  updateExpense(UpdateExpenseInput: UpdateExpenseInput!): UpdateExpenseOutput!
+  deleteExpense(DeleteExpenseInput: DeleteExpenseInput!): DeleteExpenseOutput!
+  upsertBudget(UpsertBudgetInput: UpsertBudgetInput!): UpsertBudgetOutput!
+  deleteBudget(DeleteBudgetInput: DeleteBudgetInput!): DeleteBudgetOutput!
+}
+
+input CreateUserInput {
+  """이메일"""
+  email: String!
+
+  """비밀번호"""
+  password: String!
+
+  """이름"""
+  name: String!
+}
+
+input LoginInput {
+  """이메일"""
+  email: String!
+
+  """비밀번호"""
+  password: String!
+}
+
+input CreateAccountInput {
+  """결제 수단 이름"""
+  name: String!
+
+  """결제 수단 타입"""
+  type: AccountType!
+}
+
+input UpdateAccountInput {
+  """결제 수단 ID"""
+  id: Int!
+
+  """결제 수단 이름"""
+  name: String
+
+  """결제 수단 타입"""
+  type: AccountType
+
+  """결제 수단 활성 여부"""
+  isActive: Boolean
+}
+
+input CreateCategoryInput {
+  """카테고리 이름"""
+  name: String!
+}
+
+input UpdateCategoryInput {
+  """카테고리 ID"""
+  id: Int!
+
+  """카테고리 이름"""
+  name: String!
+}
+
+input DeleteCategoryInput {
+  """카테고리 ID"""
+  id: Int!
+}
+
+input CreateExpenseInput {
+  """지출 이름"""
+  name: String!
+
+  """지출 금액"""
+  amount: Float!
+
+  """지출 날짜"""
+  postedAt: DateTime!
+
+  """결제 수단 ID"""
+  accountId: Int!
+
+  """카테고리 ID"""
+  categoryId: Int
+
+  """상점 ID"""
+  merchantId: Int
+
+  """상점 이름"""
+  merchantText: String
+
+  """메모"""
+  memo: String
+}
+
+input UpdateExpenseInput {
+  """지출 ID"""
+  id: Int!
+
+  """지출 이름"""
+  name: String
+
+  """지출 금액"""
+  amount: Float
+
+  """지출 날짜"""
+  postedAt: DateTime
+
+  """계좌 ID"""
+  accountId: Int
+
+  """카테고리 ID"""
+  categoryId: Int
+
+  """상점 ID"""
+  merchantId: Int
+
+  """상점 이름"""
+  merchantText: String
+
+  """메모"""
+  memo: String
+}
+
+input DeleteExpenseInput {
+  """지출 ID"""
+  id: Int!
+}
+
+input UpsertBudgetInput {
+  """년"""
+  year: Int!
+
+  """월"""
+  month: Int!
+
+  """예산 금액"""
+  totalAmount: Float!
+
+  """카테고리 ID"""
+  categoryId: Int
+}
+
+input DeleteBudgetInput {
+  """예산 ID"""
+  id: Int!
+}
