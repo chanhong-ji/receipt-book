@@ -21,6 +21,25 @@ type LoginOutput {
   token: String
 }
 
+type MeDto {
+  """사용자 ID"""
+  id: Int!
+
+  """이메일"""
+  email: String!
+
+  """이름"""
+  name: String!
+}
+
+type MeOutput {
+  ok: Boolean!
+  error: String
+
+  """사용자 정보"""
+  user: MeDto
+}
+
 type FindCategoriesOutput {
   ok: Boolean!
   error: String
@@ -242,6 +261,7 @@ type DeleteBudgetOutput {
 
 type Query {
   test: Boolean!
+  me: MeOutput!
   findAccounts: FindAccountsOutput!
   findCategories: FindCategoriesOutput!
   findExpenseMonthly(FindExpenseMonthlyInput: FindExpenseMonthlyInput!): FindExpenseMonthlyOutput!
@@ -288,6 +308,7 @@ input FindCategoryMonthlyExpenseInput {
 type Mutation {
   createUser(CreateUserInput: CreateUserInput!): CreateUserOutput!
   login(LoginInput: LoginInput!): LoginOutput!
+  logout: Boolean!
   createAccount(CreateAccountInput: CreateAccountInput!): CreateAccountOutput!
   updateAccount(UpdateAccountInput: UpdateAccountInput!): UpdateAccountOutput!
   createCategory(CreateCategoryInput: CreateCategoryInput!): CreateCategoryOutput!

@@ -23,6 +23,7 @@ import { join } from 'path';
       playground: false,
       autoSchemaFile: join(process.cwd(), 'schema.gql'),
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      context: ({ req, res }) => ({ req, res }),
     }),
 
     ConfigModule.forRoot({

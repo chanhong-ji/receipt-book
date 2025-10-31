@@ -15,5 +15,9 @@ export default () => ({
       secret: process.env.JWT_SECRET,
       expiresIn: process.env.JWT_EXPIRES_IN ?? '1D',
     },
+    cookie: {
+      name: process.env.COOKIE_NAME ?? 'auth_token',
+      expiresIn: Number(process.env.COOKIE_EXPIRES_IN ?? 1000 * 60 * 60 * 24),
+    },
   },
 });

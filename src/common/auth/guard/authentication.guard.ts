@@ -7,6 +7,7 @@ import { Reflector } from '@nestjs/core';
 import { UserRepository } from 'src/modules/user/application/user.repository';
 import { CustomGraphQLError } from 'src/common/error/custom-graphql-error';
 import { ErrorCode, ErrorService } from 'src/common/error/error.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
@@ -15,6 +16,7 @@ export class AuthenticationGuard implements CanActivate {
     private jwtService: JwtService,
     @Inject('UserRepository') private readonly userRepository: UserRepository,
     private readonly errorService: ErrorService,
+    private readonly configService: ConfigService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -28,7 +30,7 @@ export class AuthenticationGuard implements CanActivate {
 
     const gqlContext = GqlExecutionContext.create(context).getContext();
     const request = gqlContext.req;
-    const token = this.extractTokenFromHeader(request);
+    const token = this.extractTokenFromCookie(request);
 
     if (!token) {
       throw new CustomGraphQLError(this.errorService.get(ErrorCode.NOT_AUTHENTICATED));
@@ -48,5 +50,10 @@ export class AuthenticationGuard implements CanActivate {
   extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
+  }
+
+  extractTokenFromCookie(request: Request): string | undefined {
+    const cookieName = this.configService.get('auth.cookie.name') as string;
+    return request.cookies?.[cookieName];
   }
 }

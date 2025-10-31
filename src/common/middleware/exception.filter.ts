@@ -17,6 +17,7 @@ export class ExceptionFilter implements GqlExceptionFilter {
       message: exception.message,
       stack: exception.stack,
       userId: user?.id ?? 'anonymous',
+      timestamp: new Date().toISOString(),
     };
 
     if (exception instanceof CustomGraphQLError) {
@@ -45,7 +46,8 @@ export class ExceptionFilter implements GqlExceptionFilter {
     }
 
     console.error('Unexpected error');
-    console.error(logData);
+    console.log(logData);
+
     return {
       ok: false,
       error: '지금은 사용 할 수 없습니다.',

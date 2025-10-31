@@ -6,6 +6,7 @@ import { ErrorModule } from 'src/common/error/error.module';
 import { AuthModule } from 'src/common/auth/auth.module';
 import { CreateUserUsecase } from './domain/usecases/create-user.usecase';
 import { LoginUsecase } from './domain/usecases/login.usecase';
+import { MeUsecase } from './domain/usecases/me.usecase';
 
 @Module({
   imports: [RepositoryModule, ErrorModule, AuthModule],
@@ -15,6 +16,7 @@ import { LoginUsecase } from './domain/usecases/login.usecase';
     // Usecases
     CreateUserUsecase,
     LoginUsecase,
+    MeUsecase,
   ],
 })
 export class UserModule {}
