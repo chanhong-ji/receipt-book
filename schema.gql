@@ -158,6 +158,9 @@ type MonthlyExpenseTotalDto {
 
   """지출 합계"""
   totalExpense: Float!
+
+  """총 건수"""
+  totalCount: Int!
 }
 
 type FindMonthlyExpenseTotalOutput {

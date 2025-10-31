@@ -23,6 +23,9 @@ export class MonthlyExpenseTotalDto {
 
   @Field(() => Number, { description: '지출 합계' })
   totalExpense: number;
+
+  @Field(() => Int, { description: '총 건수' })
+  totalCount: number;
 }
 
 @ObjectType()

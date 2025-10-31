@@ -89,14 +89,20 @@ export class TypeormExpenseRepository implements ExpenseRepository {
     const { year, months } = input;
     const result = await this.repository
       .createQueryBuilder('expense')
-      .select('month, SUM(amount) as "totalExpense"')
+      .select('month, SUM(amount) as "totalExpense", COUNT(*) as "totalCount"')
       .where('expense.userId = :userId', { userId: user.id })
       .andWhere('expense.year = :year', { year })
       .andWhere('expense.month IN (:...months)', { months })
       .groupBy('expense.month')
       .getRawMany();
 
-    return { months: result.map((model) => ({ month: model.month, totalExpense: Number(model.totalExpense) })) };
+    return {
+      months: result.map((model) => ({
+        month: model.month,
+        totalExpense: Number(model.totalExpense),
+        totalCount: Number(model.totalCount),
+      })),
+    };
   }
 
   async findCategoryMonthly(

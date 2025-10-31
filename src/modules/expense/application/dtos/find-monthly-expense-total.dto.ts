@@ -7,5 +7,6 @@ export interface IFindMonthlyExpenseTotalOutput {
   months: {
     month: number;
     totalExpense: number;
+    totalCount: number;
   }[];
 }
