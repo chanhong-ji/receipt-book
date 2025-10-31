@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { BudgetRepository } from 'src/modules/budget/application/budget.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BudgetModel } from '../models/budget.model';
-import { Repository, RelationId } from 'typeorm';
+import { Repository, RelationId, In } from 'typeorm';
 import { User } from 'src/modules/user/domain/entity/user.entity';
 import { Budget } from 'src/modules/budget/domain/entity/budget.entity';
+import { Category } from 'src/modules/category/domain/entity/category.entity';
 
 @Injectable()
 export class TypeormBudgetRepository implements BudgetRepository {
@@ -42,8 +43,21 @@ export class TypeormBudgetRepository implements BudgetRepository {
         user: { id: user.id },
         category: { id: categoryId },
       },
+      relations: {
+        category: true,
+      },
     });
     return model ? this.toEntity(model) : null;
+  }
+
+  async findMany(yearMonths: string[], user: User): Promise<Budget[]> {
+    const models = await this.repository.find({
+      where: { user: { id: user.id }, yearMonth: In(yearMonths) },
+      relations: {
+        category: true,
+      },
+    });
+    return models.map(this.toEntity);
   }
 
   async delete(id: number): Promise<void> {
@@ -57,6 +71,15 @@ export class TypeormBudgetRepository implements BudgetRepository {
     budget.totalAmount = model.totalAmount;
     budget.createdAt = model.createdAt;
     budget.updatedAt = model.updatedAt;
+    if (model.category) {
+      const category = new Category();
+      category.id = model.category.id;
+      category.name = model.category.name;
+      category.sortOrder = model.category.sortOrder;
+      category.createdAt = model.category.createdAt;
+      category.updatedAt = model.category.updatedAt;
+      budget.category = category;
+    }
     return budget;
   }
 }

@@ -252,6 +252,9 @@ type BudgetDto {
 
   """예산 금액"""
   totalAmount: Float!
+
+  """카테고리"""
+  category: CategoryDto
 }
 
 type DeleteBudgetOutput {
@@ -262,6 +265,17 @@ type DeleteBudgetOutput {
   error: String
 }
 
+type FindBudgetOutput {
+  """성공 여부"""
+  ok: Boolean!
+
+  """에러 메시지"""
+  error: String
+
+  """예산 목록"""
+  budgets: [BudgetDto!]
+}
+
 type Query {
   test: Boolean!
   me: MeOutput!
@@ -270,6 +284,7 @@ type Query {
   findExpenseMonthly(FindExpenseMonthlyInput: FindExpenseMonthlyInput!): FindExpenseMonthlyOutput!
   findMonthlyExpenseTotal(FindMonthlyExpenseTotalInput: FindMonthlyExpenseTotalInput!): FindMonthlyExpenseTotalOutput!
   findCategoryMonthlyExpense(FindCategoryMonthlyExpenseInput: FindCategoryMonthlyExpenseInput!): FindCategoryMonthlyExpenseOutput!
+  findBudgets(FindBudgetInput: FindBudgetInput!): FindBudgetOutput!
 }
 
 input FindExpenseMonthlyInput {
@@ -305,6 +320,14 @@ input FindCategoryMonthlyExpenseInput {
   year: Int!
 
   """월 목록"""
+  months: [Int!]!
+}
+
+input FindBudgetInput {
+  """연도"""
+  year: Int!
+
+  """월"""
   months: [Int!]!
 }
 

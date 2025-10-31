@@ -4,6 +4,7 @@ import { BudgetResolver } from './presentation/budget.resolver';
 import { BudgetFactory } from './domain/budget.factory';
 import { UpsertBudgetUsecase } from './domain/usecases/upsert-budget.usecase';
 import { DeleteBudgetUsecase } from './domain/usecases/delete-budget.usecase';
+import { FindBudgetUsecase } from './domain/usecases/find-budget.usecase';
 
 @Module({
   imports: [RepositoryModule],
@@ -13,6 +14,7 @@ import { DeleteBudgetUsecase } from './domain/usecases/delete-budget.usecase';
     // Usecases
     UpsertBudgetUsecase,
     DeleteBudgetUsecase,
+    FindBudgetUsecase,
   ],
 })
 export class BudgetModule {}
