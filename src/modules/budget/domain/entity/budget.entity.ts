@@ -6,7 +6,8 @@ export class Budget {
   user?: User;
   category?: Category;
   yearMonth: string; // YYYY-MM-01
-  totalAmount: number;
+  totalAmount: number; // 예산 금액
+  totalExpense?: number; // 지출 총액
   createdAt: Date;
   updatedAt: Date;
 }

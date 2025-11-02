@@ -10,4 +10,7 @@ export class CategoryDto {
 
   @Field(() => Int, { description: '정렬 순서' })
   sortOrder: number;
+
+  @Field(() => Int, { description: '이번달 지출 총액', nullable: true })
+  totalExpense?: number;
 }

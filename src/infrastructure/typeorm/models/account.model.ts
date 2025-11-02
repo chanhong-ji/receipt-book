@@ -33,7 +33,7 @@ export class AccountModel {
   @Column({ type: 'enum', enum: AccountType, nullable: false })
   type: AccountType;
 
-  @OneToMany(() => ExpenseModel, (expense) => expense.account, { cascade: true })
+  @OneToMany(() => ExpenseModel, (expense) => expense.account, { cascade: true, onDelete: 'CASCADE' })
   expenses: ExpenseModel[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })

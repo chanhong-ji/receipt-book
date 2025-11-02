@@ -7,6 +7,7 @@ export class Category {
   sortOrder: number; // 정렬 순서
   createdAt: Date;
   updatedAt: Date;
+  totalExpense?: number;
 
   static create(name: string, sortOrder: number): Category {
     const category = new Category();

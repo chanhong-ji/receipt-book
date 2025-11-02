@@ -57,6 +57,9 @@ type CategoryDto {
 
   """정렬 순서"""
   sortOrder: Int!
+
+  """이번달 지출 총액"""
+  totalExpense: Int
 }
 
 type CreateCategoryOutput {
@@ -258,6 +261,9 @@ type BudgetDto {
   """예산 금액"""
   totalAmount: Float!
 
+  """이번달 지출 총액"""
+  totalExpense: Float
+
   """카테고리"""
   category: CategoryDto
 }
@@ -333,7 +339,7 @@ input FindBudgetInput {
   year: Int!
 
   """월"""
-  months: [Int!]!
+  month: Int!
 }
 
 type Mutation {

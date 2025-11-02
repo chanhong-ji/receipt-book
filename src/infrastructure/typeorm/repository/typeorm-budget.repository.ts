@@ -36,7 +36,7 @@ export class TypeormBudgetRepository implements BudgetRepository {
     return model ? this.toEntity(model) : null;
   }
 
-  async findByYearMonth(yearMonth: string, user: User, categoryId?: number): Promise<Budget | null> {
+  async findByCategory(yearMonth: string, user: User, categoryId?: number): Promise<Budget | null> {
     const model = await this.repository.findOne({
       where: {
         yearMonth,
@@ -50,9 +50,9 @@ export class TypeormBudgetRepository implements BudgetRepository {
     return model ? this.toEntity(model) : null;
   }
 
-  async findMany(yearMonths: string[], user: User): Promise<Budget[]> {
+  async findManyByYearMonth(yearMonth: string, user: User): Promise<Budget[]> {
     const models = await this.repository.find({
-      where: { user: { id: user.id }, yearMonth: In(yearMonths) },
+      where: { user: { id: user.id }, yearMonth: yearMonth },
       relations: {
         category: true,
       },

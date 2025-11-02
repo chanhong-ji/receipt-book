@@ -1,5 +1,14 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { UserModel } from './user.model';
+import { ExpenseModel } from './expense.model';
 
 @Entity({ name: 'category' })
 export class CategoryModel {
@@ -20,4 +29,7 @@ export class CategoryModel {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
   updatedAt: Date;
+
+  @OneToMany(() => ExpenseModel, (expense) => expense.category)
+  expenses: ExpenseModel[];
 }

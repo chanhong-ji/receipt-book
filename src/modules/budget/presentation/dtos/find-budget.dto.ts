@@ -1,4 +1,4 @@
-import { IsArray, IsInt } from 'class-validator';
+import { IsInt } from 'class-validator';
 import { IFindBudgetInput, IFindBudgetOutput } from '../../application/dtos/find-budget.dto';
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { BudgetDto } from './budget.dto';
@@ -10,10 +10,9 @@ export class FindBudgetInput implements IFindBudgetInput {
   @IsInt()
   year: number;
 
-  @Field(() => [Int], { description: '월' })
-  @IsInt({ each: true })
-  @IsArray()
-  months: number[];
+  @Field(() => Int, { description: '월' })
+  @IsInt()
+  month: number;
 }
 
 @ObjectType()

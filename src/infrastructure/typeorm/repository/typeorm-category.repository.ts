@@ -17,6 +17,23 @@ export class TypeormCategoryRepository implements CategoryRepository {
     return models.map(this.toEntity);
   }
 
+  /**
+   * 이번달 지출 총액을 포함한 카테고리 목록을 조회합니다.
+   */
+  async findAllWithTotalExpense(userId: number, year: number, month: number): Promise<Category[]> {
+    const models = await this.repository
+      .createQueryBuilder('category')
+      .leftJoinAndSelect('category.expenses', 'expense', 'expense.year = :year AND expense.month = :month')
+      .where('category.userId = :userId', { userId })
+      .setParameters({ year, month })
+      .groupBy('category.id')
+      .select('category.*')
+      .addSelect('SUM(expense.amount)', 'total_expense')
+      .getRawMany();
+
+    return models.map(this.toEntityRaw);
+  }
+
   async findById(id: number, userId: number): Promise<Category | null> {
     const model = await this.repository.findOne({ where: { id, user: { id: userId } } });
     if (!model) return null;
@@ -57,4 +74,24 @@ export class TypeormCategoryRepository implements CategoryRepository {
     category.updatedAt = model.updatedAt;
     return category;
   }
+
+  toEntityRaw(raw: CategoryRaw): Category {
+    const category = new Category();
+    category.id = raw.id;
+    category.name = raw.name;
+    category.sortOrder = raw.sort_order;
+    category.createdAt = raw.created_at;
+    category.updatedAt = raw.updated_at;
+    category.totalExpense = raw.total_expense ?? 0;
+    return category;
+  }
+}
+
+interface CategoryRaw {
+  id: number;
+  name: string;
+  sort_order: number;
+  created_at: Date;
+  updated_at: Date;
+  total_expense?: number;
 }

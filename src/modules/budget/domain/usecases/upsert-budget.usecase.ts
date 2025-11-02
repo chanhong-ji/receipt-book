@@ -22,7 +22,7 @@ export class UpsertBudgetUsecase {
       await this.validateCategory(input.categoryId, user);
     }
 
-    const existing = await this.budgetRepository.findByYearMonth(yearMonth, user, input.categoryId);
+    const existing = await this.budgetRepository.findByCategory(yearMonth, user, input.categoryId);
     const budget = existing
       ? await this.updateBudget(existing, input.totalAmount)
       : await this.createBudget(yearMonth, input.totalAmount, user, input.categoryId);

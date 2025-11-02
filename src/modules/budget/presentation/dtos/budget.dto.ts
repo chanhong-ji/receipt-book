@@ -12,6 +12,9 @@ export class BudgetDto {
   @Field(() => Number, { description: '예산 금액' })
   totalAmount: number;
 
+  @Field(() => Number, { description: '이번달 지출 총액', nullable: true })
+  totalExpense?: number;
+
   @Field(() => CategoryDto, { description: '카테고리', nullable: true })
   category?: CategoryDto;
 }
