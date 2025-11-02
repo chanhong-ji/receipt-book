@@ -40,6 +40,10 @@ export class TypeormAccountRepository implements AccountRepository {
     return this.toEntity(model);
   }
 
+  async delete(id: number): Promise<void> {
+    await this.repository.delete(id);
+  }
+
   toEntity(model: AccountModel): Account {
     const account = new Account();
     account.id = model.id;

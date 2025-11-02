@@ -5,6 +5,7 @@ import { AccountFactory } from './domain/account.factory';
 import { FindAccountsUsecase } from './domain/usecases/find-accounts.usecase';
 import { CreateAccountUsecase } from './domain/usecases/create-accounts.usecase';
 import { UpdateAccountUsecase } from './domain/usecases/update-account.usecase';
+import { DeleteAccountUsecase } from './domain/usecases/delete-account.usecase';
 
 @Module({
   imports: [RepositoryModule],
@@ -15,6 +16,7 @@ import { UpdateAccountUsecase } from './domain/usecases/update-account.usecase';
     FindAccountsUsecase,
     CreateAccountUsecase,
     UpdateAccountUsecase,
+    DeleteAccountUsecase,
   ],
 })
 export class AccountModule {}

@@ -232,6 +232,11 @@ type UpdateAccountOutput {
   account: AccountDto
 }
 
+type DeleteAccountOutput {
+  ok: Boolean!
+  error: String
+}
+
 type UpsertBudgetOutput {
   """성공 여부"""
   ok: Boolean!
@@ -337,6 +342,7 @@ type Mutation {
   logout: Boolean!
   createAccount(CreateAccountInput: CreateAccountInput!): CreateAccountOutput!
   updateAccount(UpdateAccountInput: UpdateAccountInput!): UpdateAccountOutput!
+  deleteAccount(DeleteAccountInput: DeleteAccountInput!): DeleteAccountOutput!
   createCategory(CreateCategoryInput: CreateCategoryInput!): CreateCategoryOutput!
   updateCategory(UpdateCategoryInput: UpdateCategoryInput!): UpdateCategoryOutput!
   deleteCategory(DeleteCategoryInput: DeleteCategoryInput!): DeleteCategoryOutput!
@@ -386,6 +392,11 @@ input UpdateAccountInput {
 
   """결제 수단 활성 여부"""
   isActive: Boolean
+}
+
+input DeleteAccountInput {
+  """결제 수단 ID"""
+  id: Int!
 }
 
 input CreateCategoryInput {

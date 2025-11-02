@@ -5,6 +5,7 @@ import { AuthUser } from 'src/common/auth/decorator/auth-user.decorator';
 import { User } from 'src/modules/user/domain/entity/user.entity';
 import { CreateAccountInput, CreateAccountOutput } from './dtos/create-accout.dto';
 import { UpdateAccountInput, UpdateAccountOutput } from './dtos/update-account.dto';
+import { DeleteAccountInput, DeleteAccountOutput } from './dtos/delete-account.dto';
 
 @Resolver()
 export class AccountResolver {
@@ -41,5 +42,14 @@ export class AccountResolver {
       ok: true,
       account,
     };
+  }
+
+  @Mutation(() => DeleteAccountOutput)
+  async deleteAccount(
+    @Args('DeleteAccountInput') input: DeleteAccountInput,
+    @AuthUser() user: User,
+  ): Promise<DeleteAccountOutput> {
+    await this.factory.deleteAccount(input, user);
+    return { ok: true };
   }
 }

@@ -5,4 +5,5 @@ export interface AccountRepository {
   findById(id: number, userId: number): Promise<Account | null>;
   update(account: Account): Promise<Account>;
   save(account: Account, userId: number): Promise<Account>;
+  delete(id: number): Promise<void>;
 }
