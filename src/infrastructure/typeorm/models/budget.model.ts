@@ -11,7 +11,11 @@ export class BudgetModel {
   @ManyToOne(() => UserModel, (user) => user.budgets, { nullable: false })
   user: UserModel;
 
-  @ManyToOne(() => CategoryModel, { nullable: false, cascade: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => CategoryModel, (category) => category.budgets, {
+    nullable: false,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   category: CategoryModel;
 
   @Column({ name: 'year_month', type: 'date', nullable: false })

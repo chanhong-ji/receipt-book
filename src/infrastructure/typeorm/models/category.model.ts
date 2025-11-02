@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { UserModel } from './user.model';
 import { ExpenseModel } from './expense.model';
+import { BudgetModel } from './budget.model';
 
 @Entity({ name: 'category' })
 export class CategoryModel {
@@ -32,4 +33,7 @@ export class CategoryModel {
 
   @OneToMany(() => ExpenseModel, (expense) => expense.category)
   expenses: ExpenseModel[];
+
+  @OneToMany(() => BudgetModel, (budget) => budget.category)
+  budgets: BudgetModel[];
 }

@@ -11,6 +11,7 @@ import {
   FindCategoryMonthlyExpenseInput,
   FindCategoryMonthlyExpenseOutput,
 } from './dtos/find-category-monthly-expense.dto';
+import { FindSummaryInput, FindSummaryOutput } from './dtos/find-summary.dto';
 
 @Resolver()
 export class ExpenseResolver {
@@ -74,5 +75,14 @@ export class ExpenseResolver {
   ): Promise<FindCategoryMonthlyExpenseOutput> {
     const { result: months } = await this.factory.findCategoryMonthlyExpense(input, user);
     return { ok: true, result: months };
+  }
+
+  @Query(() => FindSummaryOutput)
+  async findSummary(
+    @Args('FindSummaryInput') input: FindSummaryInput,
+    @AuthUser() user: User,
+  ): Promise<FindSummaryOutput> {
+    const { summary } = await this.factory.findSummary(input, user);
+    return { ok: true, summary };
   }
 }

@@ -6,6 +6,9 @@ import {
   IFindCategoryMonthlyExpenseOutput,
 } from '../../application/dtos/find-category-monthly-expense.dto';
 
+/**
+ * AI 데이터 분석용
+ */
 @Injectable()
 export class FindCategoryMonthlyExpenseUsecase {
   constructor(@Inject('ExpenseRepository') private readonly expenseRepository: ExpenseRepository) {}

@@ -8,6 +8,7 @@ import { DeleteExpenseUsecase } from './domain/usecases/delete-expense.usecase';
 import { FindExpenseMonthlyUsecase } from './domain/usecases/find-expense-monthly.usecase';
 import { FindMonthlyExpenseTotalUsecase } from './domain/usecases/find-monthly-expense-total.usecase';
 import { FindCategoryMonthlyExpenseUsecase } from './domain/usecases/find-category-monthly-expense.usecase';
+import { FindSummaryUsecase } from './domain/usecases/find-summary.usecase';
 
 @Module({
   imports: [RepositoryModule],
@@ -21,6 +22,7 @@ import { FindCategoryMonthlyExpenseUsecase } from './domain/usecases/find-catego
     FindExpenseMonthlyUsecase,
     FindMonthlyExpenseTotalUsecase,
     FindCategoryMonthlyExpenseUsecase,
+    FindSummaryUsecase,
   ],
 })
 export class ExpenseModule {}

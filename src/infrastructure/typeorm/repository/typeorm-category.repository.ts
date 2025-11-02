@@ -24,11 +24,14 @@ export class TypeormCategoryRepository implements CategoryRepository {
     const models = await this.repository
       .createQueryBuilder('category')
       .leftJoinAndSelect('category.expenses', 'expense', 'expense.year = :year AND expense.month = :month')
+      .leftJoinAndSelect('category.budgets', 'budget', 'budget.yearMonth = :yearMonth')
       .where('category.userId = :userId', { userId })
       .setParameters({ year, month })
-      .groupBy('category.id')
+      .setParameters({ yearMonth: `${year}-${String(month).padStart(2, '0')}-01` })
+      .groupBy('category.id, budget.totalAmount')
       .select('category.*')
       .addSelect('SUM(expense.amount)', 'total_expense')
+      .addSelect('budget.totalAmount', 'budget')
       .orderBy('category.name', 'ASC')
       .getRawMany();
 
@@ -83,7 +86,8 @@ export class TypeormCategoryRepository implements CategoryRepository {
     category.sortOrder = raw.sort_order;
     category.createdAt = raw.created_at;
     category.updatedAt = raw.updated_at;
-    category.totalExpense = raw.total_expense ?? 0;
+    category.totalExpense = Number(raw.total_expense) ?? 0;
+    category.thisMonthBudget = Number(raw.budget) ?? 0;
     return category;
   }
 }
@@ -95,4 +99,5 @@ interface CategoryRaw {
   created_at: Date;
   updated_at: Date;
   total_expense?: number;
+  budget?: number;
 }

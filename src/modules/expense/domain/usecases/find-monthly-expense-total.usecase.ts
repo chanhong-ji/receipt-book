@@ -12,6 +12,11 @@ export class FindMonthlyExpenseTotalUsecase {
 
   async execute(input: IFindMonthlyExpenseTotalInput, user: User): Promise<IFindMonthlyExpenseTotalOutput> {
     const { months } = await this.expenseRepository.findMonthlyExpenseTotal(input, user);
-    return { months };
+    const result: any = [];
+    for (const month of input.months.sort((a, b) => a - b)) {
+      const monthExpense = months.find((m) => m.month === month);
+      result.push({ month, totalExpense: monthExpense?.totalExpense ?? 0, totalCount: monthExpense?.totalCount ?? 0 });
+    }
+    return { months: result };
   }
 }

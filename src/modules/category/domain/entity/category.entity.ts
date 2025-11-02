@@ -8,6 +8,7 @@ export class Category {
   createdAt: Date;
   updatedAt: Date;
   totalExpense?: number;
+  thisMonthBudget?: number;
 
   static create(name: string, sortOrder: number): Category {
     const category = new Category();

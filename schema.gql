@@ -188,6 +188,24 @@ type FindCategoryMonthlyExpenseOutput {
   result: [CategoryExpense!]
 }
 
+type SummaryDto {
+  """지난 달 지출"""
+  lastMonthExpense: Float!
+
+  """이번 달 지출"""
+  thisMonthExpense: Float!
+
+  """카테고리 목록"""
+  topCategory: [CategoryDto!]!
+}
+
+type FindSummaryOutput {
+  """요약 정보"""
+  summary: SummaryDto
+  ok: Boolean!
+  error: String
+}
+
 type FindAccountsOutput {
   ok: Boolean!
   error: String
@@ -295,6 +313,7 @@ type Query {
   findExpenseMonthly(FindExpenseMonthlyInput: FindExpenseMonthlyInput!): FindExpenseMonthlyOutput!
   findMonthlyExpenseTotal(FindMonthlyExpenseTotalInput: FindMonthlyExpenseTotalInput!): FindMonthlyExpenseTotalOutput!
   findCategoryMonthlyExpense(FindCategoryMonthlyExpenseInput: FindCategoryMonthlyExpenseInput!): FindCategoryMonthlyExpenseOutput!
+  findSummary(FindSummaryInput: FindSummaryInput!): FindSummaryOutput!
   findBudgets(FindBudgetInput: FindBudgetInput!): FindBudgetOutput!
 }
 
@@ -332,6 +351,14 @@ input FindCategoryMonthlyExpenseInput {
 
   """월 목록"""
   months: [Int!]!
+}
+
+input FindSummaryInput {
+  """이번 연도"""
+  thisYear: Int!
+
+  """이번 월"""
+  thisMonth: Int!
 }
 
 input FindBudgetInput {

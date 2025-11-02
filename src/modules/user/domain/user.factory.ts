@@ -6,6 +6,7 @@ import { IMeOutput } from '../application/dtos/me.dto';
 import { CreateUserUsecase } from './usecases/create-user.usecase';
 import { LoginUsecase } from './usecases/login.usecase';
 import { MeUsecase } from './usecases/me.usecase';
+import { FindSummaryUsecase } from 'src/modules/expense/domain/usecases/find-summary.usecase';
 
 @Injectable()
 export class UserFactory {
@@ -13,6 +14,7 @@ export class UserFactory {
     private readonly createUserUsecase: CreateUserUsecase,
     private readonly loginUsecase: LoginUsecase,
     private readonly meUsecase: MeUsecase,
+    private readonly findSummaryUsecase: FindSummaryUsecase,
   ) {}
 
   createUser(input: ICreateUserInput): Promise<User> {
