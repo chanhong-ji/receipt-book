@@ -81,6 +81,10 @@ export class TypeormExpenseRepository implements ExpenseRepository {
       },
       skip,
       take,
+      order: {
+        postedAt: 'DESC',
+        name: 'ASC',
+      },
     });
     return { expenses: models.map(this.toEntity), totalCount };
   }

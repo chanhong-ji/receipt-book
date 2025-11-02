@@ -29,6 +29,7 @@ export class TypeormCategoryRepository implements CategoryRepository {
       .groupBy('category.id')
       .select('category.*')
       .addSelect('SUM(expense.amount)', 'total_expense')
+      .orderBy('category.name', 'ASC')
       .getRawMany();
 
     return models.map(this.toEntityRaw);

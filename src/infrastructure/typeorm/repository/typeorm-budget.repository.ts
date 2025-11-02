@@ -56,6 +56,9 @@ export class TypeormBudgetRepository implements BudgetRepository {
       relations: {
         category: true,
       },
+      order: {
+        category: { name: 'ASC' },
+      },
     });
     return models.map(this.toEntity);
   }

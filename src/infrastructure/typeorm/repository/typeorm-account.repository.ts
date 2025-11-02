@@ -13,7 +13,7 @@ export class TypeormAccountRepository implements AccountRepository {
   ) {}
 
   async findAll(userId: number): Promise<Account[]> {
-    const models = await this.repository.find({ where: { user: { id: userId } } });
+    const models = await this.repository.find({ where: { user: { id: userId } }, order: { name: 'ASC' } });
     return models.map(this.toEntity);
   }
 
