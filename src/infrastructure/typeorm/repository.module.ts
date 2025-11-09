@@ -12,11 +12,21 @@ import { TypeormExpenseRepository } from './repository/typeorm-expense.repositor
 import { TypeormMerchantRepository } from './repository/typeorm-merchant.repository';
 import { TypeormAccountRepository } from './repository/typeorm-account.repository';
 import { TypeormBudgetRepository } from './repository/typeorm-budget.repository';
+import { TypeormAgentAdviceRepository } from './repository/typeorm-agent-advice.repository';
+import { AgentAdviceModel } from './models/agent-advice.model';
 
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserModel, AccountModel, CategoryModel, ExpenseModel, BudgetModel, MerchantModel]),
+    TypeOrmModule.forFeature([
+      UserModel,
+      AccountModel,
+      CategoryModel,
+      ExpenseModel,
+      BudgetModel,
+      MerchantModel,
+      AgentAdviceModel,
+    ]),
   ],
   providers: [
     {
@@ -43,6 +53,10 @@ import { TypeormBudgetRepository } from './repository/typeorm-budget.repository'
       provide: 'BudgetRepository',
       useClass: TypeormBudgetRepository,
     },
+    {
+      provide: 'AgentAdviceRepository',
+      useClass: TypeormAgentAdviceRepository,
+    },
   ],
   exports: [
     'UserRepository', //
@@ -51,6 +65,7 @@ import { TypeormBudgetRepository } from './repository/typeorm-budget.repository'
     'ExpenseRepository',
     'MerchantRepository',
     'BudgetRepository',
+    'AgentAdviceRepository',
   ],
 })
 export class RepositoryModule {}

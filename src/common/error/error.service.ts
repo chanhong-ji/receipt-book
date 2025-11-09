@@ -18,6 +18,8 @@ export enum ErrorCode {
 
   CATEGORY_LIMIT_EXCEEDED = 'CATEGORY_LIMIT_EXCEEDED',
   CATEGORY_ALREADY_EXISTS = 'CATEGORY_ALREADY_EXISTS',
+
+  ADVICE_PERIOD_INVALID = 'ADVICE_PERIOD_INVALID',
 }
 
 export interface ErrorDetail {
@@ -113,6 +115,12 @@ export class ErrorService {
       description: '예산을 찾을 수 없습니다',
       statusCode: 404,
       logLevel: 'warn',
+    },
+    [ErrorCode.ADVICE_PERIOD_INVALID]: {
+      code: ErrorCode.ADVICE_PERIOD_INVALID,
+      description: '기간 내에 생성한 Agent Advice가 존재합니다',
+      statusCode: 400,
+      logLevel: 'log',
     },
   };
 

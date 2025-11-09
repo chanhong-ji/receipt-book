@@ -15,6 +15,7 @@ import { AuthModule } from './common/auth/auth.module';
 import { AccountModule } from './modules/account/account.module';
 import { BudgetModule } from './modules/budget/budget.module';
 import { join } from 'path';
+import { AgentAdviceModule } from './modules/agent-advice/agent-advice.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { join } from 'path';
     ExpenseModule,
     MerchantModule,
     BudgetModule,
+    AgentAdviceModule,
   ],
   providers: [
     {

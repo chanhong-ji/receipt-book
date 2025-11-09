@@ -20,4 +20,7 @@ export default () => ({
       expiresIn: Number(process.env.COOKIE_EXPIRES_IN ?? 1000 * 60 * 60 * 24),
     },
   },
+  adviceAgent: {
+    url: process.env.ADVICE_AGENT_URL,
+  },
 });
