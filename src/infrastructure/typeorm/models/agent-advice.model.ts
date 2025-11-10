@@ -14,7 +14,6 @@ export enum AdviceTag {
   WATCH = 'WATCH', // -- 예산 초과 주시
   WARNING = 'WARNING', // -- 예산 초과 경고
   OVERRUN = 'OVERRUN', // -- 예산 초과
-  NO_BUDGET = 'NO_BUDGET', // -- 예산 없음
 }
 
 registerEnumType(AdviceType, {

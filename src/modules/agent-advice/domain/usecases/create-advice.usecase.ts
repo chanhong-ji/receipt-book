@@ -1,25 +1,28 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { AgentAdviceRepository } from '../../application/agent-advice.repository';
+import { AgentAdvice } from '../entity/agent-advice.entity';
+import { ErrorService } from 'src/common/error/error.service';
+import { CustomGraphQLError } from 'src/common/error/custom-graphql-error';
+import { ErrorCode } from 'src/common/error/error.service';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { AgentAdviceRepository } from './agent-advice.repository';
-import { AgentAdvice } from '../domain/entity/agent-advice.entity';
-import { CustomGraphQLError } from 'src/common/error/custom-graphql-error';
-import { ErrorCode, ErrorService } from 'src/common/error/error.service';
+import { ConfigService } from '@nestjs/config';
+import { ICreateAgentAdviceInput, ICreateAgentAdviceOutput } from '../../application/dtos/create-agent-advice.dto';
 
 @Injectable()
-export class AgentAdviceService {
+export class CreateAgentAdviceUsecase {
   protected readonly adviceAgentUrl: string;
+
   constructor(
-    private readonly configService: ConfigService,
     @Inject('AgentAdviceRepository') private readonly repository: AgentAdviceRepository,
     private readonly errorService: ErrorService,
+    private readonly configService: ConfigService,
   ) {
     this.adviceAgentUrl = this.configService.getOrThrow('adviceAgent.url');
   }
 
-  async createAgentAdvice(input: { userId: number }) {
-    const recentAdvice = await this.repository.findRecentAdvice(input.userId);
+  async execute(input: ICreateAgentAdviceInput): Promise<ICreateAgentAdviceOutput> {
+    const recentAdvice = await this.repository.findOneRecentAdvice(input.userId);
     if (recentAdvice && !this.isAdvicePeriodValid(recentAdvice.periodEnd)) {
       throw new CustomGraphQLError(this.errorService.get(ErrorCode.ADVICE_PERIOD_INVALID));
     }
@@ -33,7 +36,8 @@ export class AgentAdviceService {
     const adviceEntities = advices.map((advice) =>
       AgentAdvice.create({ ...advice, periodStart: today, periodEnd: after7Days }),
     );
-    return this.repository.create(adviceEntities, input.userId);
+    const savedAdvices = await this.repository.create(adviceEntities, input.userId);
+    return { advices: savedAdvices };
   }
 
   async createAdviceInputData(userId: number) {

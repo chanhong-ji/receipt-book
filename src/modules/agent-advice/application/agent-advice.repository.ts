@@ -34,5 +34,6 @@ export interface AgentAdviceRepository {
     userId: number,
   ): Promise<AgentAdvice[]>;
 
-  findRecentAdvice(userId: number): Promise<AgentAdvice | null>;
+  findOneRecentAdvice(userId: number): Promise<AgentAdvice | null>;
+  findAllAdvices(userId: number): Promise<AgentAdvice[]>;
 }

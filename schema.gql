@@ -305,6 +305,60 @@ type FindBudgetOutput {
   budgets: [BudgetDto!]
 }
 
+type FindAdvicesOutput {
+  """조언 목록"""
+  advices: [AdviceDto!]
+
+  """성공 여부"""
+  ok: Boolean!
+
+  """에러 메시지"""
+  error: String
+}
+
+type AdviceDto {
+  """조언 ID"""
+  id: Int!
+
+  """조언 내용"""
+  adviceText: String!
+
+  """조언 타입"""
+  type: AdviceType!
+
+  """조언 태그"""
+  tag: AdviceTag
+
+  """조언 카테고리 이름"""
+  categoryName: String
+
+  """조언 기간 시작일"""
+  periodStart: String
+
+  """조언 기간 종료일"""
+  periodEnd: String
+
+  """조언 생성 일시"""
+  createdAt: DateTime
+
+  """조언 수정 일시"""
+  updatedAt: DateTime
+}
+
+enum AdviceType {
+  SUMMARY_REPORT
+  HABIT_INSIGHT
+  BUDGET_STATUS
+  CATEGORY_TIPS
+}
+
+enum AdviceTag {
+  ON_TRACK
+  WATCH
+  WARNING
+  OVERRUN
+}
+
 type Query {
   test: Boolean!
   me: MeOutput!
@@ -315,6 +369,7 @@ type Query {
   findCategoryMonthlyExpense(FindCategoryMonthlyExpenseInput: FindCategoryMonthlyExpenseInput!): FindCategoryMonthlyExpenseOutput!
   findSummary(FindSummaryInput: FindSummaryInput!): FindSummaryOutput!
   findBudgets(FindBudgetInput: FindBudgetInput!): FindBudgetOutput!
+  findAdvices: FindAdvicesOutput!
 }
 
 input FindExpenseMonthlyInput {

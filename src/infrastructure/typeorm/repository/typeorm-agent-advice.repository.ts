@@ -150,8 +150,26 @@ export class TypeormAgentAdviceRepository implements AgentAdviceRepository {
     return advice;
   }
 
-  async findRecentAdvice(userId: number): Promise<AgentAdvice | null> {
+  async findOneRecentAdvice(userId: number): Promise<AgentAdvice | null> {
     const model = await this.repository.findOne({ where: { user: { id: userId } }, order: { periodEnd: 'DESC' } });
     return model ? this.toEntity(model) : null;
+  }
+
+  async findAllAdvices(userId: number): Promise<AgentAdvice[]> {
+    const models = await this.repository
+      .createQueryBuilder('agent_advice')
+      .where(
+        'period_start = ' +
+          this.repository
+            .createQueryBuilder()
+            .subQuery()
+            .select('MAX(period_start)')
+            .from(AgentAdviceModel, 'sub')
+            .where('sub.userId = :userId', { userId })
+            .getQuery(),
+      )
+      .andWhere('agent_advice.userId = :userId', { userId })
+      .getMany();
+    return models.map(this.toEntity);
   }
 }
