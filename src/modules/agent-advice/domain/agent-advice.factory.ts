@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAgentAdviceUsecase } from './usecases/create-advice.usecase';
-import { ICreateAgentAdviceInput, ICreateAgentAdviceOutput } from '../application/dtos/create-agent-advice.dto';
 import { IFindAdvicesOutput } from '../application/dtos/find-advices.dto';
 import { User } from 'src/modules/user/domain/entity/user.entity';
 import { FindAdvicesUsecase } from './usecases/find-advices.usecase';
@@ -12,8 +11,8 @@ export class AgentAdviceFactory {
     private readonly findAdvicesUsecase: FindAdvicesUsecase,
   ) {}
 
-  createAgentAdvice(input: ICreateAgentAdviceInput): Promise<ICreateAgentAdviceOutput> {
-    return this.createAgentAdviceUsecase.execute(input);
+  async createAgentAdvice(user: User): Promise<void> {
+    await this.createAgentAdviceUsecase.execute(user);
   }
 
   findAdvices(user: User): Promise<IFindAdvicesOutput> {

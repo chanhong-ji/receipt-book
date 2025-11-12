@@ -60,6 +60,9 @@ type CategoryDto {
 
   """이번달 지출 총액"""
   totalExpense: Int
+
+  """이번달 예산"""
+  thisMonthBudget: Int
 }
 
 type CreateCategoryOutput {
@@ -359,6 +362,14 @@ enum AdviceTag {
   OVERRUN
 }
 
+type CreateAgentAdviceOutput {
+  """성공 여부"""
+  ok: Boolean!
+
+  """에러 메시지"""
+  error: String
+}
+
 type Query {
   test: Boolean!
   me: MeOutput!
@@ -439,6 +450,7 @@ type Mutation {
   deleteExpense(DeleteExpenseInput: DeleteExpenseInput!): DeleteExpenseOutput!
   upsertBudget(UpsertBudgetInput: UpsertBudgetInput!): UpsertBudgetOutput!
   deleteBudget(DeleteBudgetInput: DeleteBudgetInput!): DeleteBudgetOutput!
+  createAgentAdvice: CreateAgentAdviceOutput!
 }
 
 input CreateUserInput {

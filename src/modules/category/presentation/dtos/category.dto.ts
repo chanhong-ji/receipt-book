@@ -13,4 +13,7 @@ export class CategoryDto {
 
   @Field(() => Int, { description: '이번달 지출 총액', nullable: true })
   totalExpense?: number;
+
+  @Field(() => Int, { description: '이번달 예산', nullable: true })
+  thisMonthBudget?: number;
 }

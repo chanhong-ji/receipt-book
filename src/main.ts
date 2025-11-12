@@ -11,7 +11,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors({
     origin: process.env.CORS_ORIGIN,
-    // methods: ['GET', 'POST', 'PUㅁT', 'DELETE', 'OPTIONS'],
+    // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     // allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   });

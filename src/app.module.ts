@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -16,6 +16,7 @@ import { AccountModule } from './modules/account/account.module';
 import { BudgetModule } from './modules/budget/budget.module';
 import { join } from 'path';
 import { AgentAdviceModule } from './modules/agent-advice/agent-advice.module';
+import { ExcludeRoutesMiddleware } from './common/middleware/exclude-route.middleware';
 
 @Module({
   imports: [
@@ -62,4 +63,8 @@ import { AgentAdviceModule } from './modules/agent-advice/agent-advice.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ExcludeRoutesMiddleware).forRoutes('*');
+  }
+}

@@ -20,6 +20,8 @@ export enum ErrorCode {
   CATEGORY_ALREADY_EXISTS = 'CATEGORY_ALREADY_EXISTS',
 
   ADVICE_PERIOD_INVALID = 'ADVICE_PERIOD_INVALID',
+  ADVICE_GENERATION_FAILED = 'ADVICE_GENERATION_FAILED',
+  ADVICE_TOTAL_COUNT_NOT_ENOUGH = 'ADVICE_TOTAL_COUNT_NOT_ENOUGH',
 }
 
 export interface ErrorDetail {
@@ -121,6 +123,18 @@ export class ErrorService {
       description: '기간 내에 생성한 Agent Advice가 존재합니다',
       statusCode: 400,
       logLevel: 'log',
+    },
+    [ErrorCode.ADVICE_GENERATION_FAILED]: {
+      code: ErrorCode.ADVICE_GENERATION_FAILED,
+      description: '조언 생성에 실패했습니다',
+      statusCode: 500,
+      logLevel: 'error',
+    },
+    [ErrorCode.ADVICE_TOTAL_COUNT_NOT_ENOUGH]: {
+      code: ErrorCode.ADVICE_TOTAL_COUNT_NOT_ENOUGH,
+      description: '조언 생성을 위한 지출 내역이 부족합니다',
+      statusCode: 400,
+      logLevel: 'warn',
     },
   };
 
