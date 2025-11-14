@@ -371,7 +371,6 @@ type CreateAgentAdviceOutput {
 }
 
 type Query {
-  test: Boolean!
   me: MeOutput!
   findAccounts: FindAccountsOutput!
   findCategories: FindCategoriesOutput!

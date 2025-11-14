@@ -16,11 +16,6 @@ export class UserResolver {
     private readonly configService: ConfigService,
   ) {}
 
-  @Query(() => Boolean)
-  async test(): Promise<boolean> {
-    return true;
-  }
-
   @Public()
   @Mutation(() => CreateUserOutput)
   async createUser(@Args('CreateUserInput') input: CreateUserInput): Promise<CreateUserOutput> {

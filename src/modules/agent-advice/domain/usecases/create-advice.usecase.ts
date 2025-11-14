@@ -40,8 +40,7 @@ export class CreateAgentAdviceUsecase {
       user,
     );
     const targetMonth = months[0];
-    const totalCount = targetMonth.totalCount;
-    if (totalCount < this.minimumExpenseCount) {
+    if (!targetMonth || targetMonth.totalCount < this.minimumExpenseCount) {
       throw new CustomGraphQLError(this.errorService.get(ErrorCode.ADVICE_TOTAL_COUNT_NOT_ENOUGH));
     }
   }
@@ -56,14 +55,21 @@ export class CreateAgentAdviceUsecase {
 
   /**
    * @description agent 서버에 요청하여 조언 생성 및 저장
+   * 로컬 (개발 환경)에서는 mock 데이터로 대체
    */
   async generateAdvice(userId: number, now: DateTime): Promise<void> {
     try {
+      const isProduction = this.configService.get('NODE_ENV') === 'production';
       const inputData = await this.repository.createInputData(userId);
-      const { data } = await axios.post(this.adviceAgentUrl, inputData);
 
-      const payload = JSON.parse(data);
-      const advices = payload.advices;
+      let advices: any[] = [];
+      if (!isProduction) {
+        advices = this.getMockAdvices();
+      } else {
+        const { data } = await axios.post(this.adviceAgentUrl, inputData);
+        const payload = JSON.parse(data);
+        advices = payload.advices;
+      }
 
       if (!Array.isArray(advices) || advices.length === 0) {
         console.error('Empty or invalid advices from agent');
@@ -86,5 +92,28 @@ export class CreateAgentAdviceUsecase {
       const errorDetail = this.errorService.get(ErrorCode.ADVICE_GENERATION_FAILED);
       console.error(errorDetail, error);
     }
+  }
+
+  getMockAdvices() {
+    return [
+      {
+        type: 'SUMMARY_REPORT',
+        adviceText: '조언 1',
+        tag: 'ON_TRACK',
+        categoryName: null,
+      },
+      {
+        type: 'HABIT_INSIGHT',
+        adviceText: '조언 2',
+        tag: 'WATCH',
+        categoryName: null,
+      },
+      {
+        type: 'CATEGORY_TIPS',
+        adviceText: '조언 3',
+        tag: 'WARNING',
+        categoryName: '카테고리 3',
+      },
+    ];
   }
 }

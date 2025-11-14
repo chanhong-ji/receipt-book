@@ -32,6 +32,8 @@ export class CreateCategoryUsecase {
   }
 
   calculateOrder(existingCategories: Category[]): number {
-    return Math.max(...existingCategories.map((category) => category.sortOrder)) + 1;
+    return existingCategories.length > 0
+      ? Math.max(...existingCategories.map((category) => category.sortOrder)) + 1
+      : 1;
   }
 }

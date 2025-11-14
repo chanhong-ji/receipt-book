@@ -14,6 +14,7 @@ export class TypeormCategoryRepository implements CategoryRepository {
 
   async findAll(userId: number): Promise<Category[]> {
     const models = await this.repository.find({ where: { user: { id: userId } } });
+    if (!models) return [];
     return models.map(this.toEntity);
   }
 
