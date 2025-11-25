@@ -26,6 +26,6 @@ COPY --from=build /usr/src/app/package-lock.json ./package-lock.json
 
 RUN npm ci --omit=dev
 
-EXPOSE 4000
+EXPOSE 80
 
 CMD npm run start:prod

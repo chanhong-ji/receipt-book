@@ -1,0 +1,86 @@
+{
+  "containerDefinitions": [
+    {
+      "cpu": 0,
+      "environment": [],
+      "environmentFiles": [],
+      "essential": true,
+      "image": "710978073500.dkr.ecr.ap-northeast-2.amazonaws.com/coach-backend-repository",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/coach-backend-task",
+          "awslogs-create-group": "true",
+          "awslogs-region": "ap-northeast-2",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      },
+      "mountPoints": [],
+      "name": "coach-backend-container",
+      "portMappings": [
+        {
+          "appProtocol": "http",
+          "containerPort": 80,
+          "hostPort": 80,
+          "name": "coach-backend-container-80-tcp",
+          "protocol": "tcp"
+        }
+      ],
+      "systemControls": [],
+      "ulimits": [],
+      "volumesFrom": [],
+      "secrets": [
+        {
+          "name": "DATABASE_USERNAME",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:710978073500:secret:rds!db-70307478-06d8-4c50-86b0-2e9cd8fe503f-lKQfq0:username::"
+        },
+        {
+          "name": "DATABASE_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:710978073500:secret:rds!db-70307478-06d8-4c50-86b0-2e9cd8fe503f-lKQfq0:password::"
+        },
+        {
+          "name": "DATABASE_HOST",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:710978073500:secret:coach-backend-secret-csNy5Z:database_host::"
+        },
+        {
+          "name": "DATABASE_PORT",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:710978073500:secret:coach-backend-secret-csNy5Z:database_port::"
+        },
+        {
+          "name": "DATABASE_NAME",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:710978073500:secret:coach-backend-secret-csNy5Z:database_name::"
+        },
+        {
+          "name": "JWT_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:710978073500:secret:coach-backend-secret-csNy5Z:jwt_secret::"
+        },
+        {
+          "name": "JWT_EXPIRES_IN",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:710978073500:secret:coach-backend-secret-csNy5Z:jwt_expires_in::"
+        },
+        {
+          "name": "ADVICE_AGENT_URL",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:710978073500:secret:coach-backend-secret-csNy5Z:advice_agent_url::"
+        },
+        {
+          "name": "PORT",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-2:710978073500:secret:coach-backend-secret-csNy5Z:port::"
+        }
+      ]
+    }
+  ],
+  "cpu": "256",
+  "executionRoleArn": "arn:aws:iam::710978073500:role/ecsTaskExecutionRole",
+  "family": "coach-backend-task",
+  "memory": "512",
+  "networkMode": "awsvpc",
+  "placementConstraints": [],
+  "requiresCompatibilities": ["FARGATE"],
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "volumes": [],
+  "tags": []
+}
