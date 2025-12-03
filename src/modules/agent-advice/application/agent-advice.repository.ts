@@ -2,7 +2,7 @@ import { AdviceTag, AdviceType } from 'src/infrastructure/typeorm/models/agent-a
 import { AgentAdvice } from '../domain/entity/agent-advice.entity';
 
 export interface AgentAdviceRepository {
-  createInputData(userId: number): Promise<{
+  createInputInformation(userId: number): Promise<{
     thisMonthTotalExpense: number;
     thisMonthBudgets: {
       categoryName: string;

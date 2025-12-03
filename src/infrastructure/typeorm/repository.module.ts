@@ -14,6 +14,8 @@ import { TypeormAccountRepository } from './repository/typeorm-account.repositor
 import { TypeormBudgetRepository } from './repository/typeorm-budget.repository';
 import { TypeormAgentAdviceRepository } from './repository/typeorm-agent-advice.repository';
 import { AgentAdviceModel } from './models/agent-advice.model';
+import { AgentAdviceRequestModel } from './models/agent-advice-request.model';
+import { TypeormAgentAdviceRequestRepository } from './repository/typeorm-agent-advice-request.repository';
 
 @Global()
 @Module({
@@ -26,6 +28,7 @@ import { AgentAdviceModel } from './models/agent-advice.model';
       BudgetModel,
       MerchantModel,
       AgentAdviceModel,
+      AgentAdviceRequestModel,
     ]),
   ],
   providers: [
@@ -57,6 +60,10 @@ import { AgentAdviceModel } from './models/agent-advice.model';
       provide: 'AgentAdviceRepository',
       useClass: TypeormAgentAdviceRepository,
     },
+    {
+      provide: 'AgentAdviceRequestRepository',
+      useClass: TypeormAgentAdviceRequestRepository,
+    },
   ],
   exports: [
     'UserRepository', //
@@ -66,6 +73,7 @@ import { AgentAdviceModel } from './models/agent-advice.model';
     'MerchantRepository',
     'BudgetRepository',
     'AgentAdviceRepository',
+    'AgentAdviceRequestRepository',
   ],
 })
 export class RepositoryModule {}

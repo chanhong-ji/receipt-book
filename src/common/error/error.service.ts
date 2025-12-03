@@ -21,7 +21,8 @@ export enum ErrorCode {
 
   ADVICE_PERIOD_INVALID = 'ADVICE_PERIOD_INVALID',
   ADVICE_GENERATION_FAILED = 'ADVICE_GENERATION_FAILED',
-  ADVICE_TOTAL_COUNT_NOT_ENOUGH = 'ADVICE_TOTAL_COUNT_NOT_ENOUGH',
+  EXPENSE_TOTAL_COUNT_NOT_ENOUGH = 'EXPENSE_TOTAL_COUNT_NOT_ENOUGH',
+  ADVICE_REQUEST_IN_PROGRESS = 'ADVICE_REQUEST_IN_PROGRESS',
 }
 
 export interface ErrorDetail {
@@ -130,11 +131,17 @@ export class ErrorService {
       statusCode: 500,
       logLevel: 'error',
     },
-    [ErrorCode.ADVICE_TOTAL_COUNT_NOT_ENOUGH]: {
-      code: ErrorCode.ADVICE_TOTAL_COUNT_NOT_ENOUGH,
+    [ErrorCode.EXPENSE_TOTAL_COUNT_NOT_ENOUGH]: {
+      code: ErrorCode.EXPENSE_TOTAL_COUNT_NOT_ENOUGH,
       description: '조언 생성을 위한 지출 내역이 부족합니다',
       statusCode: 400,
       logLevel: 'warn',
+    },
+    [ErrorCode.ADVICE_REQUEST_IN_PROGRESS]: {
+      code: ErrorCode.ADVICE_REQUEST_IN_PROGRESS,
+      description: '이미 처리 중인 조언 생성 요청이 있습니다',
+      statusCode: 409,
+      logLevel: 'log',
     },
   };
 

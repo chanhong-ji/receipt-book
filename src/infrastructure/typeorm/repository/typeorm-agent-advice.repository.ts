@@ -16,7 +16,7 @@ export class TypeormAgentAdviceRepository implements AgentAdviceRepository {
     private readonly repository: Repository<AgentAdviceModel>,
   ) {}
 
-  createInputData(userId: number): Promise<{
+  createInputInformation(userId: number): Promise<{
     thisMonthTotalExpense: number;
     thisMonthBudgets: { categoryName: string; totalExpense: number; budget: number }[];
     monthlyExpenseTotals: { month: number; totalExpense: number }[];
