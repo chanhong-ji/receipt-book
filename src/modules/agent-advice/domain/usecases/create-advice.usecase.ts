@@ -96,7 +96,7 @@ export class CreateAgentAdviceUsecase {
    * Agent 서버에서 조언 데이터를 가져옴 (프로덕션) 또는 Mock 데이터 반환 (개발)
    */
   async fetchAdvicesFromAgent(userId: number): Promise<any[]> {
-    const isProduction = this.configService.get('NODE_ENV') === 'production';
+    const isProduction = this.configService.get('env') === 'production';
     const inputData = await this.repository.createInputInformation(userId);
 
     let advices: any[];

@@ -18,9 +18,7 @@ export class UpsertBudgetUsecase {
   async execute(input: IUpsertBudgetInput, user: User): Promise<IUpsertBudgetOutput> {
     const yearMonth = this.formatYearMonth(input.year, input.month);
 
-    if (input.categoryId) {
-      await this.validateCategory(input.categoryId, user);
-    }
+    await this.validateCategory(input.categoryId, user);
 
     const existing = await this.budgetRepository.findByCategory(yearMonth, user, input.categoryId);
     const budget = existing

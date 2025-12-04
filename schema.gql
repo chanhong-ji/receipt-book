@@ -587,7 +587,7 @@ input UpsertBudgetInput {
   totalAmount: Float!
 
   """카테고리 ID"""
-  categoryId: Int
+  categoryId: Int!
 }
 
 input DeleteBudgetInput {

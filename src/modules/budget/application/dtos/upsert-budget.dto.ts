@@ -4,7 +4,7 @@ export interface IUpsertBudgetInput {
   year: number;
   month: number;
   totalAmount: number;
-  categoryId?: number;
+  categoryId: number;
 }
 
 export interface IUpsertBudgetOutput {
