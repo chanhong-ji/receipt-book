@@ -17,6 +17,7 @@ import { BudgetModule } from './modules/budget/budget.module';
 import { join } from 'path';
 import { AgentAdviceModule } from './modules/agent-advice/agent-advice.module';
 import { ExcludeRoutesMiddleware } from './common/middleware/exclude-route.middleware';
+import Joi from 'joi';
 
 @Module({
   imports: [
@@ -32,6 +33,16 @@ import { ExcludeRoutesMiddleware } from './common/middleware/exclude-route.middl
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
+      envFilePath: getEnvFilePath(),
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string().valid('dev', 'production', 'test').required(),
+        DATABASE_HOST: Joi.string().required(),
+        DATABASE_PORT: Joi.number().required(),
+        DATABASE_USERNAME: Joi.string().required(),
+        DATABASE_PASSWORD: Joi.string().required(),
+        DATABASE_NAME: Joi.string().required(),
+      }),
     }),
 
     TypeOrmModule.forRootAsync({
@@ -43,7 +54,7 @@ import { ExcludeRoutesMiddleware } from './common/middleware/exclude-route.middl
         password: configService.get('database.password'),
         database: configService.get('database.database'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: configService.get('env') !== 'production',
       }),
       inject: [ConfigService],
     }),
@@ -67,5 +78,19 @@ import { ExcludeRoutesMiddleware } from './common/middleware/exclude-route.middl
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(ExcludeRoutesMiddleware).forRoutes('*');
+  }
+}
+
+function getEnvFilePath(): string {
+  const env = process.env.NODE_ENV;
+  switch (env) {
+    case 'production':
+      return '.env';
+    case 'test':
+      return '.env.test';
+    case 'dev':
+      return '.env.dev';
+    default:
+      return '';
   }
 }

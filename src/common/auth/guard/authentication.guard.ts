@@ -30,7 +30,7 @@ export class AuthenticationGuard implements CanActivate {
 
     const gqlContext = GqlExecutionContext.create(context).getContext();
     const request = gqlContext.req;
-    const token = this.extractTokenFromCookie(request);
+    const token = this.extractToken(request);
 
     if (!token) {
       throw new CustomGraphQLError(this.errorService.get(ErrorCode.NOT_AUTHENTICATED));
@@ -52,8 +52,18 @@ export class AuthenticationGuard implements CanActivate {
     return type === 'Bearer' ? token : undefined;
   }
 
-  extractTokenFromCookie(request: Request): string | undefined {
-    const cookieName = this.configService.get('auth.cookie.name') as string;
-    return request.cookies?.[cookieName];
+  extractToken(request: Request): string | undefined {
+    let token;
+
+    if (request.headers.authorization) {
+      token = this.extractTokenFromHeader(request);
+    }
+
+    if (!token) {
+      const cookieName = this.configService.get('auth.cookie.name') as string;
+      token = request.cookies?.[cookieName];
+    }
+
+    return token;
   }
 }
