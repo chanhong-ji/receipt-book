@@ -12,7 +12,7 @@ export default async function () {
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      synchronize: false,
+      synchronize: true,
     });
 
     console.log('🧹 테스트 데이터베이스 정리 중...');

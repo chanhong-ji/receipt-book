@@ -13,6 +13,8 @@ COPY . .
 
 RUN npm run build
 
+RUN npm run test:e2e
+
 # Production stage
 FROM node:${NODE_VERSION}-alpine as prod
 
