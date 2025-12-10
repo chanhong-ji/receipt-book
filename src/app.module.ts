@@ -36,7 +36,7 @@ import Joi from 'joi';
       envFilePath: getEnvFilePath(),
       ignoreEnvFile: process.env.NODE_ENV === 'production',
       validationSchema: Joi.object({
-        NODE_ENV: Joi.string().valid('dev', 'production', 'test').required(),
+        NODE_ENV: Joi.string().valid('dev', 'production', 'test', 'local').required(),
         DATABASE_HOST: Joi.string().required(),
         DATABASE_PORT: Joi.number().required(),
         DATABASE_USERNAME: Joi.string().required(),
@@ -90,6 +90,8 @@ function getEnvFilePath(): string {
       return '.env.test';
     case 'dev':
       return '.env.dev';
+    case 'local':
+      return '.env.local';
     default:
       return '';
   }
