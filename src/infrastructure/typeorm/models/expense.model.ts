@@ -1,10 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { UserModel } from './user.model';
 import { MerchantModel } from './merchant.model';
 import { AccountModel } from './account.model';
 import { CategoryModel } from './category.model';
 
 @Entity({ name: 'expense' })
+@Index(['user', 'year', 'month'])
 export class ExpenseModel {
   @PrimaryGeneratedColumn('increment')
   id: number;

@@ -8,6 +8,7 @@ import { CustomGraphQLError } from 'src/common/error/custom-graphql-error';
 
 @Injectable()
 export class CreateCategoryUsecase {
+  private readonly MAX_CATEGORY_COUNT = 10;
   constructor(
     @Inject('CategoryRepository') private readonly repository: CategoryRepository,
     private readonly errorService: ErrorService,
@@ -22,7 +23,7 @@ export class CreateCategoryUsecase {
   }
 
   validate(existingCategories: Category[], newCategoryName: string) {
-    if (existingCategories.length >= 10) {
+    if (existingCategories.length >= this.MAX_CATEGORY_COUNT) {
       throw new CustomGraphQLError(this.errorService.get(ErrorCode.CATEGORY_LIMIT_EXCEEDED));
     }
 

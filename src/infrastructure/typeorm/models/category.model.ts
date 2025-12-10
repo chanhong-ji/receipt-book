@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserModel } from './user.model';
@@ -12,6 +13,7 @@ import { ExpenseModel } from './expense.model';
 import { BudgetModel } from './budget.model';
 
 @Entity({ name: 'category' })
+@Unique(['user', 'name'])
 export class CategoryModel {
   @PrimaryGeneratedColumn('increment')
   id: number;
