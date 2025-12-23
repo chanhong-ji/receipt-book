@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 import { UserModel } from './user.model';
+import { registerEnumType } from '@nestjs/graphql';
 
 export enum RequestStatus {
   PENDING = 'PENDING',
@@ -7,6 +8,10 @@ export enum RequestStatus {
   COMPLETED = 'COMPLETED',
   FAILED = 'FAILED',
 }
+
+registerEnumType(RequestStatus, {
+  name: 'RequestStatus',
+});
 
 @Entity({ name: 'agent_advice_request' })
 export class AgentAdviceRequestModel {
