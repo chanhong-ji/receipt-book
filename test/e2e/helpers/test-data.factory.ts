@@ -42,12 +42,7 @@ export class TestDataFactory {
     };
   }
 
-  static createBudgetData(params: {
-    year: number;
-    month: number;
-    totalAmount: number;
-    categoryId?: number;
-  }) {
+  static createBudgetData(params: { year: number; month: number; totalAmount: number; categoryId?: number }) {
     return {
       year: params.year,
       month: params.month,
@@ -64,4 +59,3 @@ export class TestDataFactory {
     return `${prefix}_${Date.now()}_${Math.random().toString(36).substring(7)}`;
   }
 }
-

@@ -204,6 +204,35 @@ describe('CreateAgentAdviceUsecase', () => {
     });
   });
 
+  describe('generateAdvice', () => {
+    let fetchAdviceSpy: jest.SpyInstance;
+    let handleFailureSpy: jest.SpyInstance;
+    let handleSuccessSpy: jest.SpyInstance;
+    beforeEach(() => {
+      fetchAdviceSpy = jest.spyOn(usecase, 'fetchAdvicesFromAgent');
+      handleFailureSpy = jest.spyOn(usecase, 'handleFailure');
+      handleSuccessSpy = jest.spyOn(usecase, 'handleSuccess');
+    });
+
+    it('fetchAdvicesFromAgent 에서 오류가 발생하면 handleFailure 호출', async () => {
+      fetchAdviceSpy.mockRejectedValue(new Error('fetchAdvicesFromAgent error'));
+      agentAdviceRequestRepository.updateStatus.mockResolvedValue(undefined);
+
+      await usecase.generateAdvice(mockUser.id, DateTime.now(), 1);
+
+      expect(handleFailureSpy).toHaveBeenCalled();
+    });
+
+    it('fetchAdvicesFromAgent 에서 오류가 발생하지 않으면 handleSuccess 호출', async () => {
+      fetchAdviceSpy.mockResolvedValue([{ type: 'SUMMARY_REPORT', adviceText: 'test', tag: 'ON_TRACK' }]);
+      agentAdviceRequestRepository.updateStatus.mockResolvedValue(undefined);
+
+      await usecase.generateAdvice(mockUser.id, DateTime.now(), 1);
+
+      expect(handleSuccessSpy).toHaveBeenCalled();
+    });
+  });
+
   describe('validateAdvices', () => {
     it('array가 비어있으면 오류 발생', () => {
       const advices: any[] = [];

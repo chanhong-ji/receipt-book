@@ -32,6 +32,47 @@ describe('UpdateCategoryUsecase', () => {
     expect(errorService).toBeDefined();
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('execute', () => {
+    it('성공', async () => {
+      const user = { id: 1 } as User;
+      const input = { id: 1, name: '새 이름' };
+      const category = { id: 1, name: '기존 이름' } as Category;
+
+      repository.findAll.mockResolvedValue([category]);
+      repository.update.mockImplementation((c) => Promise.resolve(c));
+
+      const result = await usecase.execute(input, user);
+
+      expect(result.name).toBe(input.name);
+    });
+
+    it('실패 - 카테고리를 찾을 수 없음', async () => {
+      const user = { id: 1 } as User;
+      const input = { id: 1, name: '새 이름' };
+
+      repository.findAll.mockResolvedValue([]);
+
+      await expect(usecase.execute(input, user)).rejects.toThrow(errorService.get(ErrorCode.CATEGORY_NOT_FOUND).code);
+    });
+
+    it('실패 - 중복된 이름', async () => {
+      const user = { id: 1 } as User;
+      const input = { id: 1, name: '중복 이름' };
+      const category = { id: 1, name: '기존 이름' } as Category;
+      const otherCategory = { id: 2, name: '중복 이름' } as Category;
+
+      repository.findAll.mockResolvedValue([category, otherCategory]);
+
+      await expect(usecase.execute(input, user)).rejects.toThrow(
+        errorService.get(ErrorCode.CATEGORY_ALREADY_EXISTS).code,
+      );
+    });
+  });
+
   describe('isDuplicatedName: 카테코리의 이름 중복 여부 확인', () => {
     it('동일한 이름의 카테고리가 이미 존재하면, true를 반환', () => {
       const categories = [{ name: 'test', id: 1 } as Category];

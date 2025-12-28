@@ -1,46 +1,41 @@
 import { Test } from '@nestjs/testing';
-import { UpdateExpenseUsecase } from 'src/modules/expense/domain/usecases/update-expense.usecase';
+import { CreateExpenseUsecase } from 'src/modules/expense/domain/usecases/create-expense.usecase';
 import { ExpenseRepository } from 'src/modules/expense/application/expense.repository';
 import { TypeormExpenseRepository } from 'src/infrastructure/typeorm/repository/typeorm-expense.repository';
-import { ErrorCode, ErrorService } from 'src/common/error/error.service';
-import { TypeormCategoryRepository } from 'src/infrastructure/typeorm/repository/typeorm-category.repository';
-import { TypeormMerchantRepository } from 'src/infrastructure/typeorm/repository/typeorm-merchant.repository';
-import { TypeormAccountRepository } from 'src/infrastructure/typeorm/repository/typeorm-account.repository';
 import { CategoryRepository } from 'src/modules/category/application/category.repository';
+import { TypeormCategoryRepository } from 'src/infrastructure/typeorm/repository/typeorm-category.repository';
 import { MerchantRepository } from 'src/modules/merchant/application/merchant.repository';
-import { AccountRepository } from 'src/modules/account/application/account.repository';
+import { TypeormMerchantRepository } from 'src/infrastructure/typeorm/repository/typeorm-merchant.repository';
+import { ErrorCode, ErrorService } from 'src/common/error/error.service';
 import { CustomGraphQLError } from 'src/common/error/custom-graphql-error';
 import { User } from 'src/modules/user/domain/entity/user.entity';
+
 jest.mock('src/infrastructure/typeorm/repository/typeorm-expense.repository');
 jest.mock('src/infrastructure/typeorm/repository/typeorm-category.repository');
 jest.mock('src/infrastructure/typeorm/repository/typeorm-merchant.repository');
-jest.mock('src/infrastructure/typeorm/repository/typeorm-account.repository');
 
-describe('UpdateExpenseUsecase', () => {
-  let usecase: UpdateExpenseUsecase;
-  let repository: Record<keyof ExpenseRepository, jest.Mock>;
+describe('CreateExpenseUsecase', () => {
+  let usecase: CreateExpenseUsecase;
+  let expenseRepository: Record<keyof ExpenseRepository, jest.Mock>;
   let categoryRepository: Record<keyof CategoryRepository, jest.Mock>;
   let merchantRepository: Record<keyof MerchantRepository, jest.Mock>;
-  let accountRepository: Record<keyof AccountRepository, jest.Mock>;
   let errorService: ErrorService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
-        UpdateExpenseUsecase,
+        CreateExpenseUsecase,
         { provide: 'ExpenseRepository', useClass: TypeormExpenseRepository },
         { provide: 'CategoryRepository', useClass: TypeormCategoryRepository },
         { provide: 'MerchantRepository', useClass: TypeormMerchantRepository },
-        { provide: 'AccountRepository', useClass: TypeormAccountRepository },
         ErrorService,
       ],
     }).compile();
 
-    usecase = moduleRef.get(UpdateExpenseUsecase);
-    repository = moduleRef.get('ExpenseRepository');
+    usecase = moduleRef.get(CreateExpenseUsecase);
+    expenseRepository = moduleRef.get('ExpenseRepository');
     categoryRepository = moduleRef.get('CategoryRepository');
     merchantRepository = moduleRef.get('MerchantRepository');
-    accountRepository = moduleRef.get('AccountRepository');
     errorService = moduleRef.get(ErrorService);
   });
 
@@ -50,17 +45,43 @@ describe('UpdateExpenseUsecase', () => {
 
   it('should be defined', () => {
     expect(usecase).toBeDefined();
-    expect(repository).toBeDefined();
+    expect(expenseRepository).toBeDefined();
     expect(categoryRepository).toBeDefined();
     expect(merchantRepository).toBeDefined();
-    expect(accountRepository).toBeDefined();
     expect(errorService).toBeDefined();
+  });
+
+  describe('execute', () => {
+    it('성공 - validate를 통과하면 expenseRepository.save 를 호출하고 Expense 를 반환한다', async () => {
+      const user = { id: 1 } as User;
+      const input = {
+        name: '점심',
+        amount: 12000,
+        postedAt: new Date('2025-01-01'),
+        accountId: 1,
+        categoryId: 10,
+        merchantId: 20,
+        merchantText: '스타벅스',
+        memo: '메모',
+      };
+
+      categoryRepository.findById.mockResolvedValue({ id: 10 } as any);
+      merchantRepository.findById.mockResolvedValue({ id: 20 } as any);
+      expenseRepository.save.mockImplementation((expense) => Promise.resolve(expense));
+
+      const result = await usecase.execute(input, user);
+
+      expect(result.name).toBe(input.name);
+      expect(result.amount).toBe(input.amount);
+      expect(result.accountId).toBe(input.accountId);
+      expect(expenseRepository.save).toHaveBeenCalled();
+    });
   });
 
   describe('validate', () => {
     it('categoryId가 있는데 카테고리가 없으면 CATEGORY_NOT_FOUND 에러를 던진다', async () => {
       const user = { id: 1 } as User;
-      const input = { id: 1, categoryId: 10 } as any;
+      const input = { categoryId: 10, merchantId: undefined } as any;
       categoryRepository.findById.mockResolvedValue(null);
 
       await expect(usecase.validate(input, user)).rejects.toThrow(
@@ -70,29 +91,12 @@ describe('UpdateExpenseUsecase', () => {
 
     it('merchantId가 있는데 가맹점이 없으면 MERCHANT_NOT_FOUND 에러를 던진다', async () => {
       const user = { id: 1 } as User;
-      const input = { id: 1, merchantId: 20 } as any;
+      const input = { merchantId: 20, categoryId: undefined } as any;
       merchantRepository.findById.mockResolvedValue(null);
 
       await expect(usecase.validate(input, user)).rejects.toThrow(
         new CustomGraphQLError(errorService.get(ErrorCode.MERCHANT_NOT_FOUND)),
       );
-    });
-
-    it('accountId가 있는데 결제수단이 없으면 ACCOUNT_NOT_FOUND 에러를 던진다', async () => {
-      const user = { id: 1 } as User;
-      const input = { id: 1, accountId: 30 } as any;
-      accountRepository.findById.mockResolvedValue(null);
-
-      await expect(usecase.validate(input, user)).rejects.toThrow(
-        new CustomGraphQLError(errorService.get(ErrorCode.ACCOUNT_NOT_FOUND)),
-      );
-    });
-
-    it('검증 대상(categoryId/merchantId/accountId)이 없으면 성공한다', async () => {
-      const user = { id: 1 } as User;
-      const input = { id: 1 } as any;
-
-      await expect(usecase.validate(input, user)).resolves.not.toThrow();
     });
   });
 });

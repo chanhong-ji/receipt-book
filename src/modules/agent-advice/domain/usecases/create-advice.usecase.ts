@@ -80,7 +80,9 @@ export class CreateAgentAdviceUsecase {
    */
   async generateAdvice(userId: number, now: DateTime, requestId: number): Promise<void> {
     try {
-      await this.requestRepository.updateStatus(requestId, RequestStatus.PROCESSING, { startedAt: DateTime.now() });
+      await this.requestRepository.updateStatus(requestId, RequestStatus.PROCESSING, {
+        startedAt: DateTime.now().toJSDate(),
+      });
 
       const advices = await this.fetchAdvicesFromAgent(userId);
       const adviceEntities = this.createAdviceEntities(advices, now);
@@ -133,7 +135,9 @@ export class CreateAgentAdviceUsecase {
   }
 
   async handleSuccess(userId: number, requestId: number): Promise<void> {
-    await this.requestRepository.updateStatus(requestId, RequestStatus.COMPLETED, { completedAt: DateTime.now() });
+    await this.requestRepository.updateStatus(requestId, RequestStatus.COMPLETED, {
+      completedAt: DateTime.now().toJSDate(),
+    });
     console.log(`[SUCCESS] Agent advice generated for user ${userId}, request ${requestId}`);
   }
 
@@ -142,7 +146,7 @@ export class CreateAgentAdviceUsecase {
 
     await this.requestRepository.updateStatus(requestId, RequestStatus.FAILED, {
       errorMessage: error.message || 'Unknown error',
-      completedAt: DateTime.now(),
+      completedAt: DateTime.now().toJSDate(),
     });
   }
 

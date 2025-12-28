@@ -4,6 +4,8 @@ import { TypeormCategoryRepository } from 'src/infrastructure/typeorm/repository
 import { CategoryRepository } from 'src/modules/category/application/category.repository';
 import { Category } from 'src/modules/category/domain/entity/category.entity';
 import { CreateCategoryUsecase } from 'src/modules/category/domain/usecases/create-category.usecase';
+import { User } from 'src/modules/user/domain/entity/user.entity';
+
 jest.mock('src/infrastructure/typeorm/repository/typeorm-category.repository');
 
 describe('CreateCategoryUsecase', () => {
@@ -29,6 +31,34 @@ describe('CreateCategoryUsecase', () => {
     expect(usecase).toBeDefined();
     expect(repository).toBeDefined();
     expect(errorService).toBeDefined();
+  });
+
+  describe('execute', () => {
+    it('성공', async () => {
+      const user = { id: 1 } as User;
+      const input = { name: '새 카테고리' };
+      const existingCategories: Category[] = [];
+      repository.findAll.mockResolvedValue(existingCategories);
+      repository.save.mockImplementation((category) => Promise.resolve(category));
+
+      const result = await usecase.execute(input, user);
+
+      expect(result.name).toBe(input.name);
+      expect(result.sortOrder).toBe(1);
+      expect(repository.save).toHaveBeenCalled();
+    });
+
+    it('실패', async () => {
+      const user = { id: 1 } as User;
+      const input = { name: '새 카테고리' };
+      const existingCategories = Array.from({ length: 10 }, (_, i) => ({ name: `cat${i}` }) as Category);
+
+      repository.findAll.mockResolvedValue(existingCategories);
+
+      await expect(usecase.execute(input, user)).rejects.toThrow(
+        errorService.get(ErrorCode.CATEGORY_LIMIT_EXCEEDED).code,
+      );
+    });
   });
 
   describe('validate', () => {

@@ -5,6 +5,7 @@ import { TypeormAccountRepository } from 'src/infrastructure/typeorm/repository/
 import { ErrorCode, ErrorService } from 'src/common/error/error.service';
 import { User } from 'src/modules/user/domain/entity/user.entity';
 import { Account } from 'src/modules/account/domain/entity/account.entity';
+import { AccountType } from 'src/modules/user/domain/enum/account.enum';
 jest.mock('src/infrastructure/typeorm/repository/typeorm-account.repository');
 
 describe('UpdateAccountUsecase', () => {
@@ -32,6 +33,44 @@ describe('UpdateAccountUsecase', () => {
     expect(errorService).toBeDefined();
   });
 
+  describe('execute', () => {
+    it('성공', async () => {
+      // Given
+      const user = { id: 1 } as User;
+      const existingAccount = Account.create('기존 이름', AccountType.CASH, user);
+      existingAccount.id = 1;
+
+      const input = {
+        id: 1,
+        name: '새로운 이름',
+        type: AccountType.CARD,
+        isActive: false,
+      };
+
+      repository.findById.mockResolvedValue(existingAccount);
+      repository.findAll.mockResolvedValue([]);
+      repository.update.mockImplementation((acc) => Promise.resolve(acc));
+
+      // When
+      const result = await usecase.execute(input, user);
+
+      // Then
+      expect(result.name).toBe(input.name);
+      expect(result.type).toBe(input.type);
+      expect(result.isActive).toBe(input.isActive);
+    });
+
+    it('실패', async () => {
+      // Given
+      const user = { id: 1 } as User;
+      const input = { id: 999, name: 'fail' };
+      repository.findById.mockResolvedValue(null);
+
+      // When & Then
+      await expect(usecase.execute(input, user)).rejects.toThrow(errorService.get(ErrorCode.ACCOUNT_NOT_FOUND).code);
+    });
+  });
+
   describe('findAccount', () => {
     it('결제 수단을 찾을 수 없으면, 오류 발생', async () => {
       repository.findById.mockResolvedValue(null);
@@ -43,6 +82,12 @@ describe('UpdateAccountUsecase', () => {
   });
 
   describe('validateDuplicatedName', () => {
+    it('이름이 없으면, 즉시 종료', async () => {
+      const result = await usecase.validateDuplicatedName(1, undefined, 1);
+
+      expect(result).toBeUndefined();
+    });
+
     it('아이디가 다르고, 이름이 동일한 결제 수단이 이미 존재하면, 오류 발생', async () => {
       const existingAccounts = [{ name: 'test', id: 2 } as Account];
       repository.findAll.mockResolvedValue(existingAccounts);
