@@ -6,9 +6,10 @@ services:
     env_file:
       - .env.dev
     ports:
-      - '${PORT}:${PORT}'
+      - '${PORT:-4000}:${PORT:-4000}'
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - postgres
 
