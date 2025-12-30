@@ -5,6 +5,12 @@
 사용자의 지출과 예산을 관리하는 백엔드 애플리케이션입니다.
 클린 아키텍처 원칙을 적용하여 설계되었습니다.
 
+<sub>관련 프로젝트</sub>
+</br>
+<sub>🤖 AI 조언 생성 서비스 (LLM Orchestration): https://github.com/chanhong-ji/coach-agent</sub>
+</br>
+<sub>🖥 프론트엔드: https://github.com/chanhong-ji/coach-frontent</sub>
+
 ---
 
 ## 📑 목차
