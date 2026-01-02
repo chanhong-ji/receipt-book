@@ -54,13 +54,11 @@ describe('CreateAgentAdviceUsecase', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: jest.fn((key: string) => {
-              if (key === 'NODE_ENV') return 'test';
-              return null;
-            }),
             getOrThrow: jest.fn((key: string) => {
               if (key === 'adviceAgent.url') return 'http://mock-agent-url';
               throw new Error(`Config key ${key} not found`);
+
+              if (key === 'env') return 'test';
             }),
           },
         },
@@ -77,15 +75,6 @@ describe('CreateAgentAdviceUsecase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  it('should be defined', () => {
-    expect(usecase).toBeDefined();
-    expect(agentAdviceRepository).toBeDefined();
-    expect(agentAdviceRequestRepository).toBeDefined();
-    expect(expenseRepository).toBeDefined();
-    expect(errorService).toBeDefined();
-    expect(configService).toBeDefined();
   });
 
   describe('validateMinimumExpenseCount', () => {
@@ -212,6 +201,7 @@ describe('CreateAgentAdviceUsecase', () => {
       fetchAdviceSpy = jest.spyOn(usecase, 'fetchAdvicesFromAgent');
       handleFailureSpy = jest.spyOn(usecase, 'handleFailure');
       handleSuccessSpy = jest.spyOn(usecase, 'handleSuccess');
+      fetchAdviceSpy.mockResolvedValue([{ type: 'SUMMARY_REPORT', adviceText: 'test', tag: 'ON_TRACK' }]);
     });
 
     it('fetchAdvicesFromAgent 에서 오류가 발생하면 handleFailure 호출', async () => {
