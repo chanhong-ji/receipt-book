@@ -10,11 +10,10 @@ export class Account {
   createdAt: Date;
   updatedAt: Date;
 
-  static create(name: string, type: AccountType, user: User): Account {
+  static create(name: string, type: AccountType): Account {
     const account = new Account();
     account.name = name;
     account.type = type;
-    account.user = user;
     account.isActive = true;
     return account;
   }

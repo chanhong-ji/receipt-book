@@ -15,7 +15,7 @@ export class CreateAccountUsecase {
 
   async execute(input: ICreateAccountInput, user: User): Promise<Account> {
     await this.validateDuplicatedName(user, input.name);
-    const account = Account.create(input.name, input.type, user);
+    const account = Account.create(input.name, input.type);
     return this.accountRepository.save(account, user.id);
   }
 

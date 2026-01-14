@@ -37,7 +37,7 @@ describe('UpdateAccountUsecase', () => {
     it('성공', async () => {
       // Given
       const user = { id: 1 } as User;
-      const existingAccount = Account.create('기존 이름', AccountType.CASH, user);
+      const existingAccount = Account.create('기존 이름', AccountType.CASH);
       existingAccount.id = 1;
 
       const input = {

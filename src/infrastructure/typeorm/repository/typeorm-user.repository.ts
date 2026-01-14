@@ -12,11 +12,6 @@ export class TypeormUserRepository implements UserRepository {
     private readonly repository: Repository<UserModel>,
   ) {}
 
-  async findAll(): Promise<User[]> {
-    const models = await this.repository.find();
-    return models.map(this.toEntity);
-  }
-
   async findById(id: number): Promise<User | null> {
     const model = await this.repository.findOne({ where: { id } });
     if (!model) return null;
