@@ -11,6 +11,10 @@
 </br>
 <sub>🖥 프론트엔드: https://github.com/chanhong-ji/coach-frontent</sub>
 
+<sub>배포주소</sub>
+</br>
+<sub>https://coach-frontend-opal.vercel.app</sub>
+
 ---
 
 ## 📑 목차
